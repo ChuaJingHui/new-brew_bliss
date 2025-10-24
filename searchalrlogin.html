@@ -40,6 +40,30 @@
     }
     .product-result img { max-width:100px; border-radius:8px; cursor:pointer; }
   </style>
+
+<script>
+  function getUserName() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('user') || 'Guest';
+  }
+
+  window.onload = () => {
+    const user = getUserName();
+
+    // ✅ Show username in the welcome message
+    document.getElementById('welcome-user').textContent = user;
+
+    // ✅ Add ?user=username to all nav links EXCEPT logout (index.html)
+    document.querySelectorAll('a.btn').forEach(link => {
+      const href = link.getAttribute('href');
+      if (href && href.endsWith('.html') && !href.includes('index.html')) {
+        const base = href.split('?')[0];
+        link.href = `${base}?user=${encodeURIComponent(user)}`;
+      }
+    });
+  };
+</script>
+
 </head>
 <body>
   <nav id="nav">
@@ -48,18 +72,23 @@
         <img src="images/Contact/logo.png" alt="logo" class="logo">
       </div>
 
-      <div class="navItem"><a class="btn" href="main.html">Home</a></div>
-      <div class="navItem"><a class="btn" href="searchalrlogin.html">Search</a></div>
-      <div class="navItem navLinks"><a class="btn" href="menualrlogin.html">Menu</a></div>
+      <div class="navItem">
+          <a class="btn" href="main.html">Home</a>
+          <a class="btn" href="searchalrlogin.html">Search</a>
+          <a class="btn" href="menualrlogin.html">Menu</a>
+        </div>
+ 
+        <div></div><div></div><div></div>
       <div class="navItem navLinks"><a class="btn" href="index.html">Logout</a></div>
     </div>
   </nav>
 
   <header>
-    <h1>Search Products - Welcome, <span id="welcome-user">Guest</span></h1>
+    <h1>Welcome to Brew Bliss, <span id="welcome-user"></span>!</h1><br>
+    <h1>Search Products </h1>
   </header>
 
-  <main style="padding:1rem; max-width:900px; margin:0 auto;">
+  <main style="padding:1rem; max-width:900px; margin:0 25%;">
     <div style="display:flex; gap:10px; margin-bottom:1rem; align-items:center;">
       <input id="searchInput" type="text" placeholder="Search by name or description...">
       <select id="typeFilter">

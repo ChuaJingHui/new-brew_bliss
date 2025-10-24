@@ -14,27 +14,7 @@
         function ChangeFont(fontClass) {
           document.body.className = fontClass;
         }
-    </script>
-
-
-  <script>
-    function handleLogin(event) {
-      event.preventDefault();
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-
-
-      if (username === 'admin0618' && password === 'admin0618') {
-      ow.location.href = "admin.html";
-      } else if(username && password) {
-        // Normally, do server validation here. For demo, redirect to main.html
-        // We can send username as a query param to main.html for demo only
-        window.location.href = "main.html?user=" + encodeURIComponent(username);
-      } else {
-        alert('Please enter valid credentials.');
-      }
-    }
-  </script>
+    </script>  
 </head>
 <body>
  
@@ -46,18 +26,12 @@
 
 
         <div class="navItem">
-            <a class="btn" href="index.html">Home</a>
-        </div>
- 
-        <div class="navItem">
-            <div class="search">
-              <a class="btn" href="search.html">Search</a>
-            </div>
-          </div>
- 
-           <div class="navItem">
+            <a class="btn" href="index.html">Home</a>            
+            <a class="btn" href="search.html">Search</a>
             <a class="btn" href="menu.html">Menu</a>
         </div>
+ 
+        <div></div><div></div><div></div>
 
         <div class="navItem navLinks">
         <a class="btn" href="login.html">Login</a>
@@ -69,11 +43,13 @@
 
   <div class="login-box">
     <h2>Register</h2>
-    <form action="register.php" method="POST">
+    <form id="registrationForm" action="register.php" method="POST">
       <input name="email" id="email" type="email" placeholder="Email" required />
       <input name="username" id="username" type="text" placeholder="Username" required />
       <input name="password" id="password" type="password" 
               placeholder="Password (min 8 characters)" minlength="8" required />
+      <input name="confirm_password" id="confirm_password" type="password" placeholder="Confirm Password " required />
+<span id="passwordMatchMessage" style="color: red; display:block; margin-bottom: 20px;"></span>
       <button type="submit">Register</button>
       <br><br>
       <a href="login.html">Already have an account?</a><br>
@@ -81,36 +57,37 @@
     </form>
   </div>
 
+<script>    
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordField = document.getElementById('password');
+        const confirmPasswordField = document.getElementById('confirm_password');
+        const passwordMatchMessage = document.getElementById('passwordMatchMessage');
+        const registrationForm = document.getElementById('registrationForm');
+
+        function checkPasswords() {
+            if (passwordField.value === confirmPasswordField.value) {
+                passwordMatchMessage.textContent = ''; // Clear message if passwords match
+            } else {
+                passwordMatchMessage.textContent = 'Passwords do not match.';
+            }
+        }
+
+        // Add event listeners to check passwords on input change
+        passwordField.addEventListener('input', checkPasswords);
+        confirmPasswordField.addEventListener('input', checkPasswords);
+
+        // Prevent form submission if passwords don't match
+        registrationForm.addEventListener('submit', function(event) {
+            if (passwordField.value !== confirmPasswordField.value) {
+                event.preventDefault(); // Stop form submission
+                passwordMatchMessage.textContent = 'Passwords must match to register.';
+            }
+        });
+    });
+  </script>
 
   <footer>
-  <div class="footerLeft">
-      <div class="footerMenu">
-          <h1 class="fMenuTitle">About Us</h1>
-          <ul class="fList">
-              <li class="fListItem"><strong>Opening hour</strong><br>
-              every day from 8:00 AM to 9:00 PM</li>
-              <li class="fListItem"><strong>Location</strong><br>
-              10 Downing Street, London SW1A 1AA</li>
-              <li class="fListItem"><strong>Contact number</strong><br>
-              +60123456789</li>
-              <li class="fListItem"><strong>Email</strong><br>
-              brewbliss@gmail.com</li>
-          </ul>
-      </div>
 
-
-          <div>
-        <h1 class="fMenuTitle">Text Size</h1>
-              <div>
-                <a class="font_1" onclick="javascript:ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
-                <a class="font_2" onclick="javascript:ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
-                <a class="font_3" onclick="javascript:ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
-              </div>
-
-
-          </div>
-        </div>
-  </div>
   <div class="footerRight">
       <div class="footerRightMenu">
           <h1 class="fMenuTitle">Subscribe to our channel</h1>

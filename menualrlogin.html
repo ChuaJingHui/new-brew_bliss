@@ -13,7 +13,7 @@
         .font_3 { font-size: 16px; }
     </style>
 
-    <script>
+<script>
   function getUserName() {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get('user') || 'Guest';
@@ -55,19 +55,12 @@
 
 
         <div class="navItem">
-            <a class="btn" href="main.html">Home</a>
+          <a class="btn" href="main.html">Home</a>
+          <a class="btn" href="searchalrlogin.html">Search</a>
+          <a class="btn" href="#products.html">Menu</a>
         </div>
  
-        <div class="navItem">
-            <div class="search">
-              <a class="btn" href="searchalrlogin.html">Search</a>
-            </div>
-          </div>
- 
- 
-        <div class="navItem navLinks">
-          <a class="btn" href="#products">Menu</a>
-        </div>
+        <div></div><div></div><div></div>
 
 
         <div class="navItem navLinks">
@@ -75,7 +68,10 @@
         </div>
     </nav>
 
-
+<header>
+    <h1>Welcome to Brew Bliss, <span id="welcome-user"></span>!</h1>
+  </header>
+  
       <main>
         <section id="intro">
           <section class="intro">
@@ -272,42 +268,48 @@ const products = [
   </script>
 
 
-<div id="paymentModal">
+  <div id="paymentModal" style="display: none;">
     <div class="payment">
       <span class="close" onclick="document.getElementById('paymentModal').style.display='none'">X</span>
+      <br>
+      
       <h1 class="payTitle">Personal Information</h1>
       <form action="buy.php" method="POST" onsubmit="prepareCartData()">
-
-
         <input type="hidden" name="cart" id="cartInput">
 
 
         <label>Name and Surname</label>
-        <input type="text" name="username" placeholder="Stefan" class="payInput" required><br>
- 
+        <input type="text" name="username" placeholder="Enter your name" class="payInput" required><br>
+
+
         <label>Phone Number</label>
-        <input type="text" name="phone" placeholder="+6012 345 6789" class="payInput"  required><br>
-       
+        <input type="text" name="phone" placeholder="+60 12-345 6789" class="payInput" required><br>
+
+
         <label>Address</label>
-        <input type="text" name="address" placeholder="10 Downing Street, London SW1A 1AA" class="payInput" required><br><br>
-   
+        <input type="text" name="address" placeholder="Your address" class="payInput" required><br><br>
+<br>
+
         <h1 class="payTitle">Card Information</h1>
         <div class="cardIcons">
           <img src="./images/Contact/visa.png" width="40" class="cardIcon">
           <img src="./images/Contact/master.png" width="40" class="cardIcon">
         </div>
- 
-        <input type="text" name="card_number" class="payInput" placeholder="Card Number"  required>
+
+
+        <input type="text" name="card_number" class="payInput" placeholder="Card Number" required>
         <div class="cardInfo">
-          <input type="text" name="expiry_month" placeholder="mm" class="payInput sm"  required>
-          <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm"  required>
+          <input type="text" name="expiry_month" placeholder="mm" class="payInput sm" required>
+          <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm" required>
           <input type="text" name="cvv" placeholder="cvv" class="payInput sm" required>
         </div>
- 
+
+<br><br>
         <button type="submit" class="payButton">Checkout!</button>
       </form>
     </div>
   </div>
+
 
 
   <script>

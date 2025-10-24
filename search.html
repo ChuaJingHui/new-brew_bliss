@@ -101,7 +101,7 @@
           <p><strong>RM ${p.price.toFixed(2)}</strong></p>
         `;
         // Add click event to image to redirect to menu page with type hash
-        div.querySelector('img').addEventListener('click', () => {
+        div.addEventListener('click', () => {
           window.location.href = `menu.html#${p.type}s`;
         });
 
@@ -130,18 +130,12 @@
 
 
         <div class="navItem">
-            <a class="btn" href="index.html">Home</a>
-        </div>
- 
-        <div class="navItem">
-            <div class="search">
-              <a class="btn" href="search.html">Search</a>
-            </div>
-          </div>
-
-        <div class="navItem">
+            <a class="btn" href="index.html">Home</a>            
+            <a class="btn" href="search.html">Search</a>
             <a class="btn" href="menu.html">Menu</a>
         </div>
+ 
+        <div></div><div></div><div></div>
  
         <div class="navItem navLinks">
           <a class="btn" href="login.html">Login</a>
@@ -152,7 +146,7 @@
 
   <header><h1>Search Products</h1></header>
   <main>
-    <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
+    <div style="display: flex; gap: 10px; margin-bottom: 1rem;align-items:center;">
       <input type="text" id="searchInput" placeholder="Search by name or description..." oninput="searchProducts()" />
       <select id="typeFilter" onchange="searchProducts()">
         <option value="all">All</option>
