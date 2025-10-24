@@ -8,7 +8,8 @@ Our slide ---> https://www.canva.com/design/DAGpjbT7DHo/gnk3DJ5_m9IFdH7wKamANQ/e
 
 <h2><strong>How to view admin page</strong></h2>
 first, go to login page
-![image](https://github.com/user-attachments/assets/911c48dc-d67a-418d-aa27-2e0e27541778)<br><br>
+<img width="1903" height="992" alt="image" src="https://github.com/user-attachments/assets/0278503b-b73c-462d-9941-e4fb3f72298c" />
+<br><br>
 
 you need to type "<strong>admin0618@gmail.com</strong>"for the email
 and "<strong>admin0618</strong>"for the password
