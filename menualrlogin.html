@@ -83,189 +83,32 @@
       </main>
 
 
-      <section id="products">
+  <section id="products">
+    <h2>Menu</h2><br>
 
 
-       <div class="headingM"></div>
-        <h2>Menu</h2><br>
-       </div>
+    <section id="drinks">
+      <h2>Drinks</h2>
+      <div class="product-grid" id="drinksGrid"></div>
+    </section>
 
 
-        <section id="drinks">
-            <h2>Drinks</h2>
-              <div class="product-grid" id="drinksGrid"></div>
-        </section>
+    <section id="foods">
+      <br><h2>Desserts</h2>
+      <div class="product-grid" id="foodGrid"></div>
+    </section>
 
 
-        <section id="foods">
-          <br><h2>Desserts</h2>
-          <div class="product-grid" id="foodGrid"></div>
-        </section>
+    <button id="cartToggle" onclick="toggleCart()">View Cart</button>
 
 
-        <button id="cartToggle" onclick="toggleCart()">View Cart</button>
-
-
-        <div id="cart">
-          <h3>Your Cart</h3>
-            <div id="cartItems"></div>
-            <strong>Total: RM <span id="total">0.00</span></strong>
-            <button id="buyNow" onclick="buyNow()">Buy Now</button>
-        </div>
-
-
-  <script>
-const products = [
-  { name: "Espresso", image: "Drinks/espresso.jpg", price: 6.00, type: "drink", description: "Strong and bold espresso" },
-  { name: "Latte", image: "Drinks/latte.jpg", price: 8.50, type: "drink", description: "Smooth milk latte" },
-  { name: "Americano", image: "Drinks/americano.jpg", price: 7.00, type: "drink", description: "Espresso with hot water" },
-  { name: "Cappuccino", image: "Drinks/cappuccino.jpg", price: 8.00, type: "drink", description: "Classic cappuccino with foam" },
-  { name: "Mocha", image: "Drinks/mocha.jpg", price: 9.00, type: "drink", description: "Chocolate flavored coffee" },
-  { name: "Apple Juice", image: "Drinks/apple.jpg", price: 5.50, type: "drink", description: "Fresh apple juice" },
-  { name: "Orange Juice", image: "Drinks/Orange.jpg", price: 5.50, type: "drink", description: "Fresh orange juice" },
-  { name: "Watermelon Juice", image: "Drinks/watermelon.jpg", price: 6.00, type: "drink", description: "Refreshing watermelon juice" },
-  { name: "Honey Lemon", image: "Drinks/honeylemon.jpg", price: 5.00, type: "drink", description: "Sweet and tangy honey lemon" },
-  { name: "Lemon Tea", image: "Drinks/LemonTea.jpg", price: 5.00, type: "drink", description: "Cool lemon-flavored tea" },
-  { name: "Strawberry Cake", image: "food/strawberryCake.jpg", price: 12.00, type: "food", description: "Sweet strawberry cake" },
-  { name: "Red Velvet", image: "food/redVelvet.jpg", price: 13.00, type: "food", description: "Rich red velvet cake" },
-  { name: "Brownie", image: "food/brownie.jpg", price: 6.50, type: "food", description: "Chocolate brownie" },
-  { name: "Chocolate Cake", image: "food/chocolateCake.jpg", price: 12.00, type: "food", description: "Delicious chocolate cake" },
-  { name: "Chocolate Cupcake", image: "food/chocolateCupcake.jpg", price: 6.00, type: "food", description: "Moist chocolate cupcake" },
-  { name: "Vanilla Cupcake", image: "food/vanillaCupcake.jpg", price: 6.00, type: "food", description: "Vanilla flavored cupcake" },
-  { name: "Tiramisu", image: "food/tiramisu.jpg", price: 14.00, type: "food", description: "Classic tiramisu dessert" },
-  { name: "Berries Cheesecake", image: "food/berriesCheesecake.jpg", price: 13.50, type: "food", description: "Cheesecake with berries" },
-  { name: "Mango Cheesecake", image: "food/mangoCheesecake.jpg", price: 13.50, type: "food", description: "Mango cheesecake slice" },
-  { name: "Pancake", image: "food/pancake.jpg", price: 7.50, type: "food", description: "Stack of fluffy pancakes" },
-  { name: "Chocolate Mousse", image: "food/chocolateMousse.jpg", price: 9.00, type: "food", description: "Creamy chocolate mousse" }
-];
-
-
-
-
-    const drinksGrid = document.getElementById("drinksGrid");
-    const foodGrid = document.getElementById("foodGrid");
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-
-    products.forEach(p => {
-      const div = document.createElement("div");
-      div.className = "product";
-      if (p.type === "drink") {
-        div.innerHTML = `
-          <img src="images/${p.image}" alt="${p.name}">
-          <h4>${p.name}</h4>
-          <label>Hot/Ice:</label>
-          <select id="temp-${p.name}">
-            <option value="Hot">Hot</option>
-            <option value="Ice">Ice</option>
-          </select>
-          <p>${p.description}</p>
-          <p>RM ${p.price.toFixed(2)}</p>
-          <button onclick="addToCart('${p.name}', ${p.price}, document.getElementById('temp-${p.name}').value)">Add to Cart</button>
-        `;
-        drinksGrid.appendChild(div);
-      } else {
-        div.innerHTML = `
-          <img src="images/${p.image}" alt="${p.name}">
-          <h4>${p.name}</h4>
-          <p>${p.description}</p>
-          <p>RM ${p.price.toFixed(2)}</p>
-          <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
-        `;
-        foodGrid.appendChild(div);
-      }
-    });
-
-
-    function addToCart(name, price, temp = null) {
-      const itemKey = temp ? `${name} (${temp})` : name;
-      const item = cart.find(i => i.name === itemKey);
-      if (item) {
-        item.qty++;
-      } else {
-        cart.push({ name: itemKey, price, qty: 1 });
-      }
-      saveCart();
-      renderCart();
-      openCart();
-    }
-
-
-    function decreaseQty(name) {
-      const item = cart.find(i => i.name === name);
-      if (item) {
-        item.qty--;
-        if (item.qty <= 0) {
-          cart = cart.filter(i => i.name !== name);
-        }
-      }
-      saveCart();
-      renderCart();
-    }
-
-
-    function saveCart() {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-
-    function renderCart() {
-      const cartItems = document.getElementById("cartItems");
-      const totalEl = document.getElementById("total");
-      cartItems.innerHTML = "";
-      let total = 0;
-
-
-      cart.forEach(item => {
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "cart-item";
-        itemDiv.innerHTML = `
-          <span>${item.name} (x${item.qty}) - RM ${(item.price * item.qty).toFixed(2)}</span>
-          <span class="cart-controls">
-            <button onclick="decreaseQty('${item.name}')">−</button>
-            <button onclick="addToCart('${item.name}', ${item.price})">+</button>
- 
-          </span>
-        `;
-        cartItems.appendChild(itemDiv);
-        total += item.price * item.qty;
-      });
-
-
-      totalEl.textContent = total.toFixed(2);
-    }
-
-
-    function toggleCart() {
-      const cartEl = document.getElementById("cart");
-      cartEl.style.display = cartEl.style.display === "none" ? "block" : "none";
-    }
-
-
-    function openCart() {
-      document.getElementById("cart").style.display = "block";
-    }
-
-
-    renderCart();
-    if (cart.length > 0) openCart();
-
-
-    function buyNow() {
-      if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-      }else{
-        document.getElementById('paymentModal').style.display = 'flex';
-      cart = [];
-      saveCart();
-      renderCart();
-      toggleCart();
-      }
-    }
-
-
-  </script>
+    <div id="cart" style="display: none;">
+      <h3>Your Cart</h3><br>
+      <div id="cartItems"></div>
+      <strong>Total: RM <span id="total">0.00</span></strong>
+      <button id="buyNow" onclick="buyNow()">Buy Now</button>
+    </div>
+  </section>
 
 
   <div id="paymentModal" style="display: none;">
@@ -311,46 +154,211 @@ const products = [
   </div>
 
 
+<script>
+  const products = [
+    { name: "Espresso", image: "Drinks/espresso.jpg", price: 6.00, type: "drink", description: "Strong and bold espresso" },
+    { name: "Latte", image: "Drinks/latte.jpg", price: 8.50, type: "drink", description: "Smooth milk latte" },
+    { name: "Americano", image: "Drinks/americano.jpg", price: 7.00, type: "drink", description: "Espresso with hot water" },
+    { name: "Cappuccino", image: "Drinks/cappuccino.jpg", price: 8.00, type: "drink", description: "Classic cappuccino with foam" },
+    { name: "Mocha", image: "Drinks/mocha.jpg", price: 9.00, type: "drink", description: "Chocolate flavored coffee" },
+    { name: "Apple Juice", image: "Drinks/apple.jpg", price: 5.50, type: "drink", description: "Fresh apple juice" },
+    { name: "Orange Juice", image: "Drinks/orange.jpg", price: 5.50, type: "drink", description: "Fresh orange juice" },
+    { name: "Watermelon Juice", image: "Drinks/watermelon.jpg", price: 6.00, type: "drink", description: "Refreshing watermelon juice" },
+    { name: "Honey Lemon", image: "Drinks/honeylemon.jpg", price: 5.00, type: "drink", description: "Sweet and tangy honey lemon" },
+    { name: "Lemon Tea", image: "Drinks/lemontea.jpg", price: 5.00, type: "drink", description: "Cool lemon-flavored tea" },
+    { name: "Strawberry Cake", image: "food/strawberryCake.jpg", price: 12.00, type: "food", description: "Sweet strawberry cake" },
+    { name: "Red Velvet", image: "food/redVelvet.jpg", price: 13.00, type: "food", description: "Rich red velvet cake" },
+    { name: "Brownie", image: "food/brownie.jpg", price: 6.50, type: "food", description: "Chocolate brownie" },
+    { name: "Chocolate Cake", image: "food/chocolateCake.jpg", price: 12.00, type: "food", description: "Delicious chocolate cake" },
+    { name: "Chocolate Cupcake", image: "food/chocolateCupcake.jpg", price: 6.00, type: "food", description: "Moist chocolate cupcake" },
+    { name: "Vanilla Cupcake", image: "food/vanillaCupcake.jpg", price: 6.00, type: "food", description: "Vanilla flavored cupcake" },
+    { name: "Tiramisu", image: "food/tiramisu.jpg", price: 14.00, type: "food", description: "Classic tiramisu dessert" },
+    { name: "Berries Cheesecake", image: "food/berriesCheesecake.jpg", price: 13.50, type: "food", description: "Cheesecake with berries" },
+    { name: "Mango Cheesecake", image: "food/mangoCheesecake.jpg", price: 13.50, type: "food", description: "Mango cheesecake slice" },
+    { name: "Pancake", image: "food/pancake.jpg", price: 7.50, type: "food", description: "Stack of fluffy pancakes" },
+    { name: "Chocolate Mousse", image: "food/chocolateMousse.jpg", price: 9.00, type: "food", description: "Creamy chocolate mousse" }
+  ];
 
-  <script>
-    function prepareCartData() {
-    document.getElementById('cartInput').value = JSON.stringify(cart);
-}
+  const drinksGrid = document.getElementById("drinksGrid");
+  const foodGrid = document.getElementById("foodGrid");
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
+  // Display all products
+  products.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "product";
+    const imageLink = `<a href="search.html?type=${p.type}"><img src="images/${p.image}" alt="${p.name}"></a>`;
 
-
-
-function buyNow() {
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
+    if (p.type === "drink") {
+      div.innerHTML = `
+        ${imageLink}
+        <h4>${p.name}</h4>
+        <label>Hot/Ice:</label>
+        <select id="temp-${p.name}">
+          <option value="Hot">Hot</option>
+          <option value="Ice">Ice</option>
+        </select>
+        <p>${p.description}</p>
+        <p>RM ${p.price.toFixed(2)}</p>
+        <button onclick="addToCart('${p.name}', ${p.price}, document.getElementById('temp-${p.name}').value)">Add to Cart</button>
+      `;
+      drinksGrid.appendChild(div);
     } else {
-        prepareCartData();
-        document.getElementById('paymentModal').style.display = 'flex';
+      div.innerHTML = `
+        ${imageLink}
+        <h4>${p.name}</h4>
+        <p>${p.description}</p>
+        <p>RM ${p.price.toFixed(2)}</p>
+        <button onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
+      `;
+      foodGrid.appendChild(div);
     }
-}
+  });
 
+  // Add item to cart
+  function addToCart(name, price, temp = null) {
+    const itemKey = temp ? `${name} (${temp})` : name;
+    const item = cart.find(i => i.name === itemKey);
+    if (item) {
+      item.qty++;
+    } else {
+      cart.push({ name: itemKey, price, qty: 1 });
+    }
+    saveCart();
+    renderCart();
+    openCart();
+  }
 
+  // Decrease quantity
+  function decreaseQty(name) {
+    const item = cart.find(i => i.name === name);
+    if (item) {
+      item.qty--;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.name !== name);
+      }
+    }
+    saveCart();
+    renderCart();
+  }
 
+  // Save cart to local storage
+  function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
 
-  </script>
+  // Render cart visually
+  function renderCart() {
+    const cartItems = document.getElementById("cartItems");
+    const totalEl = document.getElementById("total");
+    cartItems.innerHTML = "";
+    let total = 0;
 
+    cart.forEach(item => {
+      const [pureName, temp] = item.name.includes("(")
+        ? item.name.replace(")", "").split(" (")
+        : [item.name, null];
 
-  <script >
-  const productButton = document.querySelector(".productButton");
-    const payment = document.querySelector(".purchasehistory");
-    const close = document.querySelector(".close");
-   
-    productButton.addEventListener("click", () => {
-      payment.style.display = "flex";
+      const product = products.find(p => p.name === pureName);
+      const imgSrc = product ? `images/${product.image}` : "images/placeholder.jpg";
+
+      const itemDiv = document.createElement("div");
+      itemDiv.className = "cart-item";
+      itemDiv.innerHTML = `
+        <img src="${imgSrc}" alt="${pureName}" class="cart-img">
+        <div class="cart-info">
+          <p class="cart-name">${pureName}${temp ? ` (${temp})` : ""}</p>
+        </div>
+        <div><p class="cart-price">RM ${(item.price * item.qty).toFixed(2)}</p></div>
+          
+        <div class="cart-controls">
+          <button class="qty-btn" onclick="decreaseQty('${item.name}')">−</button>
+          <span class="cart-qty">${item.qty}</span>
+          <button class="qty-btn" onclick="addToCart('${item.name}', ${item.price})">+</button>
+        </div>
+      `;
+      cartItems.appendChild(itemDiv);
+      total += item.price * item.qty;
     });
-   
-    close.addEventListener("click", () => {
-      payment.style.display = "none";
-    });
-    </script>
+
+    totalEl.textContent = total.toFixed(2);
+  }
+
+  // Toggle cart display
+  function toggleCart() {
+    const cartEl = document.getElementById("cart");
+    cartEl.style.display = cartEl.style.display === "none" ? "block" : "none";
+  }
+
+  function openCart() {
+    document.getElementById("cart").style.display = "block";
+  }
+
+  function prepareCartData() {
+    document.getElementById('cartInput').value = JSON.stringify(cart);
+  }
+
+  function buyNow() {
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    } else {
+      prepareCartData();
+      document.getElementById('paymentModal').style.display = "flex";
+    }
+  }
+
+  // On load, render saved cart
+  renderCart();
+  if (cart.length > 0) openCart();
+</script>
 
 
-<br><br><br><br>
+
+<footer>
+  <div class="footerLeft">
+      <div class="footerMenu">
+          <h1 class="fMenuTitle">About Us</h1>
+          <ul class="fList">
+              <li class="fListItem"><strong>Opening hour</strong><br>
+              every day from 8:00 AM to 9:00 PM</li>
+              <li class="fListItem"><strong>Location</strong><br>
+              10 Downing Street, London SW1A 1AA</li>
+              <li class="fListItem"><strong>Contact number</strong><br>
+              +60123456789</li>
+              <li class="fListItem"><strong>Email</strong><br>
+              brewbliss@gmail.com</li>
+          </ul>
+      </div>
+<div class="footerMenu">
+          <div>
+        <h1 class="fMenuTitle">Text Size</h1>
+              <div>
+                <a class="font_1" onclick="javascript:ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
+                <a class="font_2" onclick="javascript:ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
+                <a class="font_3" onclick="javascript:ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
+              </div>
+
+
+          </div>
+        </div>
+  </div>
+  <div class="footerRight">
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Subscribe to our channel</h1>
+      </div>
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Follow Us</h1>
+          <div class="fIcons">
+              <img src="./images/Contact/facebook.png"  alt="facebook" class="fIcon">
+              <img src="./images/Contact/instagram.png" alt="instagram" class="fIcon">
+              <img src="./images/Contact/whatsapp.png" alt="whatsapp" class="fIcon">
+          </div>
+      </div>
+      <div class="footerRightMenu">
+          <span class="copyright">© 2025 Brew Bliss. All rights reserved.</span>
+      </div>
+  </div>
+</footer>
 </body>
 </html>
