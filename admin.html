@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Dashboard - Brew Bliss</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+        .font_1 { font-size: 24px; }
+        .font_2 { font-size: 20px; }
+        .font_3 { font-size: 16px; }
+    </style>
+
+   <script>
+        // This function was there
+        function getUserName() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('user') || 'Guest';
+        }
+
+        // THIS IS THE MISSING PART!
+        window.onload = () => {
+            const user = getUserName();
+
+            // Make sure your HTML has <span id="welcome-user"></span> where you want the name
+            const welcomeUserElement = document.getElementById('welcome-user');
+            if (welcomeUserElement) { // Add a check to prevent error if element is still missing
+                welcomeUserElement.textContent = user;
+            } else {
+                console.warn("Element with id 'welcome-user' not found.");
+            }
+
+
+            // Add ?user=username to all nav links EXCEPT logout (index.html)
+            document.querySelectorAll('a.btn').forEach(link => {
+                const href = link.getAttribute('href');
+                if (href && href.endsWith('.html') && !href.includes('index.html')) {
+                    const base = href.split('?')[0];
+                    link.href = `${base}?user=${encodeURIComponent(user)}`;
+                }
+            });
+
+            // THIS IS THE CRITICAL CALL TO loadData()
+            loadData();
+        };
+    </script>     
+
+    <script>
+        function ChangeFont(fontClass) {
+          document.body.className = fontClass;
+        }
+    </script>
+
+</head>
+<body>
+
+  <nav id="nav">
+      <div class="navTop">
+        <div class="navItem">
+          <img src="images/Contact/logo.png" alt="logo" class="logo">
+        </div>
+
+
+        <div class="navItem">
+            <a class="btn" href="main.html">Home</a>
+        </div>
+ 
+        <div class="navItem">
+            <div class="search">
+              <a class="btn" href="searchalrlogin.html">Search</a>
+            </div>
+        </div>
+ 
+        <div class="navItem navLinks">
+          <a class="btn" href="menualrlogin.html">Menu</a>
+        </div>
+
+        <div class="navItem navLinks">
+          <a class="btn" href="admin.html">Admin</a>
+          <a class="btn" href="index.html">Logout</a>
+        </div>
+    </nav>
+
+
+<br>
+<main class="dashboard_main">
+  <header>
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, <span id="welcome-user"></span>!</p>
+  </header>
+
+
+  <br>
+
+
+  <br>
+
+
+  <br>
+
+  <section class="order_table">
+    <h2>Orders</h2>
+    <table>
+      <thead>
+        <tr>
+        <th>Order Id</th>
+        <th>Products</th>
+        <th>Quantity</th>
+        <th>Price</th>
+      </tr>
+      </thead>
+      <tbody id="order_items">
+        <!-- Filled by fetch -->
+      </tbody>
+    </table>
+  </section>
+
+  <br>
+
+  <section class="purchase_table">
+    <h2>Purchase History</h2>
+    <table>
+      <thead>
+        <tr>
+        <th>Id</th>
+        <th>Username</th>
+        <th>Phone Number</th>
+        <th>Address</th>
+        <th>Card Number</th>
+        <th>Expiry Month</th>
+        <th>Expiry Year</th>
+        <th>CVV</th>
+        <th>Purchase Time</th></tr>
+      </thead>
+      <tbody id="purchasehistory">
+        <!-- Filled by fetch -->
+      </tbody>
+    </table>
+  </section>
+</main>
+
+  <script>
+    // ... (Your getUserName() and ChangeFont() functions are here) ...
+
+    async function loadData() {
+        try {
+            console.log("Attempting to fetch data from admin_data.php...");
+            let res = await fetch('admin_data.php');
+
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            let data = await res.json();
+            console.log("Data fetched successfully:", data);
+
+            // 1. Populate Orders Table (ID: order_items)
+            const orderTbody = document.getElementById('order_items');
+            if (!orderTbody) {
+                console.error("Error: 'order_items' tbody not found!");
+                // Optionally, alert the user or stop execution
+                // alert("Orders table placeholder not found!");
+                return;
+            }
+            orderTbody.innerHTML = ''; // Clear existing content
+            console.log("Populating Orders table...");
+
+            if (data.orders && data.orders.length > 0) {
+                data.orders.forEach(order => {
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${order.order_id}</td>
+                        <td>${order.product_name}</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.price}</td>
+                    `;
+                    orderTbody.appendChild(tr);
+                });
+                console.log(`Successfully added ${data.orders.length} orders.`);
+            } else {
+                console.log("No orders data received or orders array is empty.");
+            }
+
+
+            // 2. Populate Purchase History Table (ID: purchasehistory)
+            const purchaseTbody = document.getElementById('purchasehistory');
+            if (!purchaseTbody) {
+                console.error("Error: 'purchasehistory' tbody not found!");
+                // Optionally, alert the user or stop execution
+                // alert("Purchase History table placeholder not found!");
+                return;
+            }
+            purchaseTbody.innerHTML = ''; // Clear existing content
+            console.log("Populating Purchase History table...");
+
+            if (data.purchases && data.purchases.length > 0) {
+                data.purchases.forEach(p => {
+                    let tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${p.id}</td>
+                        <td>${p.username}</td>
+                        <td>${p.phone}</td>
+                        <td>${p.address}</td>
+                        <td>${p.card_number}</td>
+                        <td>${p.expiry_month}</td>
+                        <td>${p.expiry_year}</td>
+                        <td>${p.cvv}</td>
+                        <td>${p.purchase_time}</td>
+                    `;
+                    purchaseTbody.appendChild(tr);
+                });
+                console.log(`Successfully added ${data.purchases.length} purchases.`);
+            } else {
+                console.log("No purchase data received or purchases array is empty.");
+            }
+
+        } catch(e) {
+            console.error("Error loading data:", e);
+            // Also display an alert for visibility (good for debugging, remove in production)
+            alert("An error occurred while loading data: " + e.message);
+        }
+    }
+</script>
+
+
+<br>
+
+  <footer>
+  <div class="footerLeft">
+      <div class="footerMenu">
+          <h1 class="fMenuTitle">About Us</h1>
+          <ul class="fList">
+              <li class="fListItem"><strong>Opening hour</strong><br>
+              every day from 8:00 AM to 9:00 PM</li>
+              <li class="fListItem"><strong>Location</strong><br>
+              10 Downing Street, London SW1A 1AA</li>
+              <li class="fListItem"><strong>Contact number</strong><br>
+              +60123456789</li>
+              <li class="fListItem"><strong>Email</strong><br>
+              brewbliss@gmail.com</li>
+          </ul>
+      </div>
+
+
+<div class="footerMenu">
+          <div>
+        <h1 class="fMenuTitle">Text Size</h1>
+              <div>
+                <a class="font_1" onclick="javascript:ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
+                <a class="font_2" onclick="javascript:ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
+                <a class="font_3" onclick="javascript:ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
+              </div>
+
+
+          </div>
+        </div>
+  </div>
+  <div class="footerRight">
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Subscribe to our channel</h1>
+      </div>
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Follow Us</h1>
+          <div class="fIcons">
+              <img src="./images/Contact/facebook.png"  alt="facebook" class="fIcon">
+              <img src="./images/Contact/instagram.png" alt="instagram" class="fIcon">
+              <img src="./images/Contact/whatsapp.png" alt="whatsapp" class="fIcon">
+          </div>
+      </div>
+      <div class="footerRightMenu">
+          <span class="copyright">© 2025 Brew Bliss. All rights reserved.</span>
+      </div>
+  </div>
+</footer>
+
+</body>
+</html>

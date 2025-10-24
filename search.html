@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Search Products - Brew Bliss</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .font_1 { font-size: 24px; }
+    .font_2 { font-size: 20px; }
+    .font_3 { font-size: 16px; }
+
+
+    #searchInput {
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 12px;
+      border: 2px solid #6c8ea4;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      box-shadow: 0 0 6px #82aaff44;
+    }
+    #typeFilter {
+      padding: 0.6rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 2px solid #6c8ea4;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 4px #6c8ea455;
+      margin-left: 0.5rem;
+    }
+    .product-result {
+      background: #f0f8ffcc;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 1px 1px 5px #6c8ea4aa;
+    }
+  </style>
+
+
+  <script>
+    function ChangeFont(fontClass) {
+      document.body.className = fontClass;
+    }
+  </script>
+
+
+  <script>
+    const products = [
+      { name: "Espresso", image: "images/Drinks/espresso.jpg", price: 6.00, type: "drink", description: "Strong and bold espresso" },
+      { name: "Latte", image: "images/Drinks/latte.jpg", price: 8.50, type: "drink", description: "Smooth milk latte" },
+      { name: "Americano", image: "images/Drinks/americano.jpg", price: 7.00, type: "drink", description: "Espresso with hot water" },
+      { name: "Cappuccino", image: "images/Drinks/cappuccino.jpg", price: 8.00, type: "drink", description: "Classic cappuccino with foam" },
+      { name: "Mocha", image: "images/Drinks/mocha.jpg", price: 9.00, type: "drink", description: "Chocolate flavored coffee" },
+      { name: "Apple Juice", image: "images/Drinks/apple.jpg", price: 5.50, type: "drink", description: "Fresh apple juice" },
+      { name: "Orange Juice", image: "images/Drinks/orange.jpg", price: 5.50, type: "drink", description: "Fresh orange juice" },
+      { name: "Watermelon Juice", image: "images/Drinks/watermelon.jpg", price: 6.00, type: "drink", description: "Refreshing watermelon juice" },
+      { name: "Honey Lemon", image: "images/Drinks/honeylemon.jpg", price: 5.00, type: "drink", description: "Sweet and tangy honey lemon" },
+      { name: "Lemon Tea", image: "images/Drinks/lemontea.jpg", price: 5.00, type: "drink", description: "Cool lemon-flavored tea" },
+      { name: "Strawberry Cake", image: "images/food/strawberryCake.jpg", price: 12.00, type: "food", description: "Sweet strawberry cake" },
+      { name: "Red Velvet", image: "images/food/redVelvet.jpg", price: 13.00, type: "food", description: "Rich red velvet cake" },
+      { name: "Brownie", image: "images/food/brownie.jpg", price: 6.50, type: "food", description: "Chocolate brownie" },
+      { name: "Chocolate Cake", image: "images/food/chocolateCake.jpg", price: 12.00, type: "food", description: "Delicious chocolate cake" },
+      { name: "Chocolate Cupcake", image: "images/food/chocolateCupcake.jpg", price: 6.00, type: "food", description: "Moist chocolate cupcake" },
+      { name: "Vanilla Cupcake", image: "images/food/vanillaCupcake.jpg", price: 6.00, type: "food", description: "Vanilla flavored cupcake" },
+      { name: "Tiramisu", image: "images/food/tiramisu.jpg", price: 14.00, type: "food", description: "Classic tiramisu dessert" },
+      { name: "Berries Cheesecake", image: "images/food/berriesCheesecake.jpg", price: 13.50, type: "food", description: "Cheesecake with berries" },
+      { name: "Mango Cheesecake", image: "images/food/mangoCheesecake.jpg", price: 13.50, type: "food", description: "Mango cheesecake slice" },
+      { name: "Pancake", image: "images/food/pancake.jpg", price: 7.50, type: "food", description: "Stack of fluffy pancakes" },
+      { name: "Chocolate Mousse", image: "images/food/chocolateMousse.jpg", price: 9.00, type: "food", description: "Creamy chocolate mousse" }
+    ];
+
+
+    function searchProducts() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const selectedType = document.getElementById('typeFilter').value;
+      const resultsContainer = document.getElementById('searchResults');
+      resultsContainer.innerHTML = '';
+
+
+      const filtered = products.filter(p => {
+        const matchesType = (selectedType === 'all' || p.type === selectedType);
+        const matchesQuery = p.name.toLowerCase().includes(query) || p.description.toLowerCase().includes(query);
+        return matchesType && matchesQuery;
+      });
+
+
+      if (filtered.length === 0) {
+        resultsContainer.innerHTML = "<p>No products found.</p>";
+        return;
+      }
+
+
+      filtered.forEach(p => {
+        const div = document.createElement('div');
+        div.classList.add('product-result');
+        div.innerHTML = `
+          <h3>${p.name}</h3>
+          <img src="${p.image}" alt="${p.name}" style="max-width:100px;border-radius:8px;margin:5px 0; cursor:pointer;">
+          <p>${p.description}</p>
+          <p><strong>RM ${p.price.toFixed(2)}</strong></p>
+        `;
+        // Add click event to image to redirect to menu page with type hash
+        div.querySelector('img').addEventListener('click', () => {
+          window.location.href = `menu.html#${p.type}s`;
+        });
+
+
+        resultsContainer.appendChild(div);
+      });
+    }
+
+
+    window.onload = () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const typeParam = urlParams.get('type');
+      if (typeParam) {
+        document.getElementById('typeFilter').value = typeParam;
+      }
+      searchProducts();
+    };
+  </script>
+</head>
+<body>
+  <nav id="nav">
+      <div class="navTop">
+        <div class="navItem">
+          <img src="images/Contact/logo.png" alt="logo" class="logo">
+        </div>
+
+
+        <div class="navItem">
+            <a class="btn" href="index.html">Home</a>
+        </div>
+ 
+        <div class="navItem">
+            <div class="search">
+              <a class="btn" href="search.html">Search</a>
+            </div>
+          </div>
+
+        <div class="navItem">
+            <a class="btn" href="menu.html">Menu</a>
+        </div>
+ 
+        <div class="navItem navLinks">
+          <a class="btn" href="login.html">Login</a>
+          <a class="btn1" href="register.html">Register</a>
+        </div>
+    </nav>
+
+
+  <header><h1>Search Products</h1></header>
+  <main>
+    <div style="display: flex; gap: 10px; margin-bottom: 1rem;">
+      <input type="text" id="searchInput" placeholder="Search by name or description..." oninput="searchProducts()" />
+      <select id="typeFilter" onchange="searchProducts()">
+        <option value="all">All</option>
+        <option value="drink">Drink</option>
+        <option value="food">Food</option>
+      </select>
+    </div>
+    <div id="searchResults"></div>
+  </main>
+
+
+  <footer>
+  <div class="footerLeft">
+      <div class="footerMenu">
+          <h1 class="fMenuTitle">About Us</h1>
+          <ul class="fList">
+              <li class="fListItem"><strong>Opening hour</strong><br>
+              every day from 8:00 AM to 9:00 PM</li>
+              <li class="fListItem"><strong>Location</strong><br>
+              10 Downing Street, London SW1A 1AA</li>
+              <li class="fListItem"><strong>Contact number</strong><br>
+              +60123456789</li>
+              <li class="fListItem"><strong>Email</strong><br>
+              brewbliss@gmail.com</li>
+          </ul>
+      </div>
+
+
+<div class="footerMenu">
+          <div>
+        <h1 class="fMenuTitle">Text Size</h1>
+              <div>
+                <a class="font_1" onclick="javascript:ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
+                <a class="font_2" onclick="javascript:ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
+                <a class="font_3" onclick="javascript:ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
+              </div>
+
+
+          </div>
+        </div>
+  </div>
+  <div class="footerRight">
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Subscribe to our channel</h1>
+      </div>
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Follow Us</h1>
+          <div class="fIcons">
+              <img src="./images/Contact/facebook.png"  alt="facebook" class="fIcon">
+              <img src="./images/Contact/instagram.png" alt="instagram" class="fIcon">
+              <img src="./images/Contact/whatsapp.png" alt="whatsapp" class="fIcon">
+          </div>
+      </div>
+      <div class="footerRightMenu">
+          <span class="copyright">© 2025 Brew Bliss. All rights reserved.</span>
+      </div>
+  </div>
+</footer>
+
+
+</body>
+</html>
