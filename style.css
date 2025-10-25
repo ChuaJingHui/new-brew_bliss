@@ -1163,3 +1163,38 @@ tbody tr:hover {
 .font_3 {
     font-size: 16px; /* Large */
 }
+
+/* General button styling for delete */
+.btn-delete {
+    background-color: #dc3545; /* Bootstrap's danger red */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px; /* Slightly rounded corners */
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease; /* Smooth transitions */
+    min-width: 70px; /* Ensure consistent width */
+    text-align: center;
+}
+
+/* Hover effect */
+.btn-delete:hover {
+    background-color: #c82333; /* Darker red on hover */
+    transform: translateY(-1px); /* Slight lift */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+}
+
+/* Active (click) effect */
+.btn-delete:active {
+    background-color: #bd2130; /* Even darker red when clicked */
+    transform: translateY(0); /* Press down effect */
+    box-shadow: none;
+}
+
+/* Focus styling for accessibility */
+.btn-delete:focus {
+    outline: 2px solid #007bff; /* Blue outline for focus */
+    outline-offset: 2px;
+}

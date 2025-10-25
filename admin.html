@@ -77,6 +77,10 @@
 </main>
 
   <script>
+    // Moved ChangeFont function here as it was inside <style> tags which is unusual
+    function ChangeFont(fontClass) {
+        document.body.className = fontClass;
+    }
 
     async function loadData() {
         try {
@@ -94,8 +98,6 @@
             const orderTbody = document.getElementById('order_items');
             if (!orderTbody) {
                 console.error("Error: 'order_items' tbody not found!");
-                // Optionally, alert the user or stop execution
-                // alert("Orders table placeholder not found!");
                 return;
             }
             orderTbody.innerHTML = ''; // Clear existing content
@@ -110,6 +112,7 @@
                         <td>${order.product_name}</td>
                         <td>${order.quantity}</td>
                         <td>${order.price}</td>
+                        <td><button class="btn-delete" data-order-id="${order.order_id}">Delete</button></td>
                     `;
                     orderTbody.appendChild(tr);
                 });
@@ -118,13 +121,10 @@
                 console.log("No orders data received or orders array is empty.");
             }
 
-
             // 2. Populate Purchase History Table (ID: purchasehistory)
             const purchaseTbody = document.getElementById('purchasehistory');
             if (!purchaseTbody) {
                 console.error("Error: 'purchasehistory' tbody not found!");
-                // Optionally, alert the user or stop execution
-                // alert("Purchase History table placeholder not found!");
                 return;
             }
             purchaseTbody.innerHTML = ''; // Clear existing content
@@ -153,12 +153,13 @@
 
         } catch(e) {
             console.error("Error loading data:", e);
-            // Also display an alert for visibility (good for debugging, remove in production)
             alert("An error occurred while loading data: " + e.message);
         }
     }
 
-    
+    // Call loadData when the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', loadData);
+
 </script>
 
 
@@ -211,6 +212,6 @@
       </div>
   </div>
 </footer>
-
+   <script src="delete.js"></script> <!-- Link to your JavaScript file -->
 </body>
 </html>

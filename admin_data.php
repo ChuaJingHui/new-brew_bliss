@@ -1,18 +1,16 @@
 <?php
 header('Content-Type: application/json');
-include 'db.php';
+require 'db.php'; // Use require to ensure db.php is loaded, using the unified file
 
 $orders = [];
-$order_res = $conn->query("SELECT order_id, id, product_name, price, quantity FROM order_items ORDER BY order_id DESC LIMIT 50");
-while($row = $order_res->fetch_assoc()){
-  $orders[] = $row;
-}
+// Use PDO for fetching orders
+$stmt_orders = $pdo->query("SELECT order_id, id, product_name, price, quantity FROM order_items ORDER BY order_id DESC LIMIT 50");
+$orders = $stmt_orders->fetchAll();
 
 $purchases = [];
-$purchase_res = $conn->query("SELECT id, username, phone, address, card_number, expiry_month, expiry_year, cvv, purchase_time FROM purchasehistory ORDER BY id DESC LIMIT 50");
-while($row = $purchase_res->fetch_assoc()){
-  $purchases[] = $row;
-}
+// Use PDO for fetching purchases
+$stmt_purchases = $pdo->query("SELECT id, username, phone, address, card_number, expiry_month, expiry_year, cvv, purchase_time FROM purchasehistory ORDER BY id DESC LIMIT 50");
+$purchases = $stmt_purchases->fetchAll();
 
-echo json_encode(['orders'=>$orders, 'purchases'=>$purchases]);
+echo json_encode(['orders' => $orders, 'purchases' => $purchases]);
 ?>
