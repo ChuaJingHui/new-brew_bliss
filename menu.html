@@ -44,13 +44,14 @@
 
 
   <main>
-    <section id="intro">
-      <section class="intro">
-        <h2>Your Daily Cup of Joy</h2>
-        <p>We serve love, warmth, and great coffee.</p>
-      </section>
-    </section>
-  </main>
+        <section id="intro">
+          <section class="intro">
+            <h2>Your Daily Cup of Joy</h2>
+            <p>We serve love, warmth, and great coffee.</p>
+          </section>
+        </section>
+       
+      </main>
 
 
   <section id="products">
@@ -73,7 +74,7 @@
 
 
     <div id="cart" style="display: none;">
-      <h3>Your Cart</h3><br>
+      <h3>Your Cart:</h3><br>
       <div id="cartItems"></div>
       <strong>Total: RM <span id="total">0.00</span></strong>
       <button id="buyNow" onclick="buyNow()">Buy Now</button>
@@ -91,17 +92,20 @@
         <input type="hidden" name="cart" id="cartInput">
 
 
-        <label>Name and Surname</label>
-        <input type="text" name="username" placeholder="Enter your name" class="payInput" required><br>
-
-
-        <label>Phone Number</label>
-        <input type="text" name="phone" placeholder="+60 12-345 6789" class="payInput" required><br>
-
-
-        <label>Address</label>
+        <div class="personal-info-section">
+    <div class="form-group">
+        <label for="name"><strong>Name and Surname</strong></label>
+        <input type="text" name="username" placeholder="Enter your name" class="payInput" required>
+    </div>
+    <div class="form-group">
+        <label for="phone"><strong>Phone Number</strong></label>
+        <input type="text" name="phone" placeholder="+60 12-345 6789" class="payInput" required>
+    </div>
+    <div class="form-group">
+        <label for="address"><strong>Address</strong></label>
         <input type="text" name="address" placeholder="Your address" class="payInput" required><br><br>
-<br>
+    </div>
+</div>
 
         <h1 class="payTitle">Card Information</h1>
         <div class="cardIcons">
@@ -212,7 +216,14 @@
     renderCart();
   }
 
-  // Save cart to local storage
+  // Remove item completely
+  function removeFromCart(name) {
+    cart = cart.filter(i => i.name !== name);
+    saveCart();
+    renderCart();
+  }
+
+  // Save cart to localStorage
   function saveCart() {
     localStorage.setItem("cart", JSON.stringify(cart));
   }
@@ -238,14 +249,15 @@
         <img src="${imgSrc}" alt="${pureName}" class="cart-img">
         <div class="cart-info">
           <p class="cart-name">${pureName}${temp ? ` (${temp})` : ""}</p>
-        </div>
-        <div><p class="cart-price">RM ${(item.price * item.qty).toFixed(2)}</p></div>
+          <div class="cart-controls">
+            <button class="qty-btn" onclick="decreaseQty('${item.name}')">−</button>
+            <input type="number" class="cart-qty-input" value="${item.qty}" min="1" data-name="${item.name}">
+            <button class="qty-btn" onclick="addToCart('${pureName}', ${item.price}, '${temp || ""}')">+</button>
+            <p class="cart-price"><label>RM ${(item.price * item.qty).toFixed(2)}</label></p>
+          </div>
           
-        <div class="cart-controls">
-          <button class="qty-btn" onclick="decreaseQty('${item.name}')">−</button>
-          <span class="cart-qty">${item.qty}</span>
-          <button class="qty-btn" onclick="addToCart('${item.name}', ${item.price})">+</button>
         </div>
+        <label for="action"><button class="trash-btn" onclick="removeFromCart('${item.name}')">🗑️</button></label>
       `;
       cartItems.appendChild(itemDiv);
       total += item.price * item.qty;
@@ -253,6 +265,22 @@
 
     totalEl.textContent = total.toFixed(2);
   }
+
+  // Handle manual quantity input
+  document.addEventListener("input", (e) => {
+    if (e.target.classList.contains("cart-qty-input")) {
+      const name = e.target.dataset.name;
+      const newQty = parseInt(e.target.value);
+      const item = cart.find(i => i.name === name);
+      if (item && newQty > 0) {
+        item.qty = newQty;
+      } else if (newQty <= 0) {
+        removeFromCart(name);
+      }
+      saveCart();
+      renderCart();
+    }
+  });
 
   // Toggle cart display
   function toggleCart() {
@@ -282,6 +310,7 @@
   renderCart();
   if (cart.length > 0) openCart();
 </script>
+
 
 
 

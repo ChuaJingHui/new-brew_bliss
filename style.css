@@ -123,7 +123,7 @@ nav {
   cursor: pointer;
 }
 
-/* Login Box */
+
 /* Login Box */
 .login-box {
   background: #f0f8ffcc;
@@ -251,6 +251,7 @@ nav {
   width: 200px;
   object-fit: cover;
   margin-bottom: 8px;
+  height: 200px;
 }
 #cartToggle {
   position: fixed;
@@ -279,11 +280,10 @@ nav {
   overflow-y: auto;
 }
 .cart-item img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
   border-radius: 6px;
-  margin-right: 10px;
 }
 .cart-item {
   display: flex;
@@ -297,17 +297,48 @@ nav {
 }
 .cart-info {
   display: flex;
-  align-items: center;
-  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  margin-left: 10px;
 }
+
+.cart-price label {
+    font-size: 18px;
+    font-weight: bold;
+    align-items: center; /* Vertically center price and trash */
+    gap: 5px; /* Space between price and trash button */
+    margin-right: auto; /* Pushes this group to the far right if .cart-info has flex-grow: 1 */
+    text-align: center;
+}
+
 .cart-name {
   font-weight: bold;
   font-size: 16px;
-  margin: 0;
+  margin: 0 0 5px 0;
 }
 .cart-price {
   color: #555;
   font-size: 14px;
+  font-weight: bold; /* Make price a bit bolder */
+  margin-left: 15px; /* Space between controls and price */
+  min-width: 70px; /* Ensure enough space for the price */
+  text-align: right; /* Align price to the right */
+}
+input[type="number"] {
+  width: 40px;       /* Smaller width for the input box */
+  /* max-width: 50px; - Can be removed if width is fixed */
+  padding: 4px 0; /* Adjust padding for height */
+  font-size: 0.9rem; /* Slightly smaller text */
+  text-align: center; /* Center text in input */
+  border: 1px solid #ccc; /* Add border for definition */
+  border-radius: 4px; /* Slightly rounded corners */
+  -moz-appearance: textfield; /* Hide Firefox number input arrows */
+}
+/* Hide arrow buttons for Chrome, Safari, Edge */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 .cart-controls {
   display: flex;
@@ -319,21 +350,43 @@ nav {
   border: none;
   color: white;
   font-size: 16px;
-  padding: 5px 10px;
+  /* New properties for consistent button size and centering */
+  width: 28px;
+  height: 28px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0; /* Remove default padding as size is fixed */
   border-radius: 6px;
   cursor: pointer;
 }
 .qty-btn:hover {
   background-color: #c08d48;
 }
-.cart-qty {
+.input.cart-qty {
   min-width: 20px;
   text-align: center;
   font-weight: bold;
+
 }
 .cart-controls button {
   margin-left: 5px;
 }
+.trash-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 25px; /* Slightly larger icon */
+  cursor: pointer;
+  margin-left: 10px; /* Space between price and trash icon */
+  padding: 5px; /* Add some padding for easier clicking */
+}
+
+.trash-btn:hover {
+  background-color: #e74c3c; /* Red color on hover for visual feedback */
+}
+
 #buyNow {
   margin-top: 10px;
   background: green;
@@ -358,7 +411,7 @@ nav {
 
 /*cart(payment)*/
 .payment{
-  width: 500px;
+  width: 600px;
   height: 650px;
   background-color: white;
   position: absolute;
@@ -385,6 +438,9 @@ nav {
   display: inline-block;
   padding-bottom: 8px;
   margin: 0 auto 25px auto;
+}
+h1.payTitle{
+    margin-top: 30px;
 }
 
 label {
@@ -451,28 +507,142 @@ label {
 
 /* Admin */
 
-.table {
+/* Main dashboard layout */
+
+
+header h1 {
     text-align: center;
-    width: 100%;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: azure;
-}
-.th {
-    border: 1px solid #070707;
-    padding: 12px;
-    background-color: #000000c7;
-    color: white;
-    font-size: 2px;
-}
-.td {
-    border:0.5px solid #111111;
-}
-.h2 {
-    font-size: 28px;
     color: #333;
+    font-size: 2.5em;
+    margin-bottom: 40px;
+}
+
+/* Section headers for tables */
+.order_table h2,
+.purchase_table h2 {
+    text-align: left;
+    color: #0e4d91; /* A distinct color for section titles */
+    border-bottom: 2px solid #0e4d91;
+    padding-bottom: 10px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+/* Table general styling */
+
+table {
+    width: 85%;
+    border-collapse: collapse; /* Collapse borders for a clean look */
+    margin-bottom: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05); /* Soft shadow for tables */
+    border-radius: 8px ;
+    overflow: hidden; /* Ensures rounded corners apply to content */
+    text-align: center;
+    margin: auto;
+}
+
+/* Table header (thead) styling */
+thead {
+    background-color: #124c8b; /* Primary color for headers */
+    color: white;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid rgb(12, 80, 126); /* Light border between rows */
+}
+
+/* Table body (tbody) row styling */
+tbody tr:nth-child(odd) {
+    background-color: #bdd6ee; /* Zebra striping for readability */
+}
+
+tbody tr:nth-child(even) {
+    background-color: #deeaf6; /* Zebra striping for readability */
+}
+
+tbody tr:hover {
+    background-color: #648ac4; /* Highlight row on hover */
+}
+
+/*personal information*/
+
+.form-group {
+    display: flex;
+    align-items: center; /* Keep labels and inputs vertically aligned */
+    margin-top: 0px;
+    margin-bottom: 5px;
+    padding: 0 20px;
+    /* Remove padding or borders here, we want them on the inputs */
+}
+.form-group label {
+    flex: 0 0 180px; /* Fixed width for labels */
+    margin-right: 20px;
+    font-size: 1.1em;
+    color: #555;
+    text-align: left;
+}
+
+.form-group input[type="text"] {
+    flex: 1; /* Input takes up remaining space, ensures inputs are same width */
+    padding: 10px 0; /* Only vertical padding, no horizontal padding within the input itself */
+    border: none; /* Remove all borders first */
+    border-bottom: 2px solid #ccc; /* Add only the bottom border for the underline effect */
+    background-color: transparent; /* Ensure no background interferes */
+    border-radius: 0; /* No rounded corners for a sharp underline */
+    font-size: 1em;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease; /* Smooth transition for the underline color */
+    text-align: right;
+}
+
+.form-group input[type="text"]:focus {
+    border-bottom-color: #3f51b5; /* Highlight underline on focus */
+    box-shadow: none; /* Remove box-shadow to keep it clean, or subtle shadow below line */
+    text-align: right;
+}
+
+/* Placeholder text styling */
+.form-group input[type="text"]::placeholder {
+    color: #999;
     text-align: center;
 }
+
+@media (max-width: 768px) {
+    .personal-info-section {
+        margin: 20px auto;
+        padding: 20px;
+        width: 95%;
+    }
+
+    .personal-info-section h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 20px;
+        padding: 0 10px;
+    }
+
+    .form-group label {
+        flex: unset;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 8px;
+        margin-right: 0;
+    }
+
+    .form-group input[type="text"] {
+        width: 100%;
+        padding: 8px 0; /* Adjust padding for smaller screens */
+    }
+}
+
 
 .navItem{
   margin-right: 20px;
@@ -505,13 +675,13 @@ label {
   max-width: 700px;
   margin: 1rem auto 3rem;
   box-shadow: 2px 2px 12px rgba(108, 142, 164, 0.4);
-
 }
 
 .comments-container p {
   font-style: italic;
   color: #445566;
   margin-bottom: 0.8rem;
+  text-align: left;
 }
 
 .footer {
@@ -755,7 +925,7 @@ label {
     }
     
     .img {
-      width: 200px;
+      width: 2%;
       border-radius: 12px;
       object-fit: cover;
       margin-bottom: 0.5rem;
@@ -861,4 +1031,135 @@ label {
   .comments-container {
     padding: 1rem;
   }
+}
+
+/*Comments*/
+
+.btn-review{
+   background-color: #92c3d3; /* A vibrant blue, matching your theme */
+    color: white;
+    padding: 14px 35px; /* Generous padding for a larger, more inviting button */
+    border: none;
+    border-radius: 30px; /* Highly rounded, pill-shape for a friendly, modern look */
+    font-size: 1.2em; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* All caps for emphasis */
+    letter-spacing: 1px; /* Spaced out letters */
+    cursor: pointer;
+    outline: none; /* Remove outline on focus for a cleaner look */
+
+    /* Centering the button within its container */
+    display: block; /* Ensures margin: auto works for centering */
+    margin: 30px auto 0 auto; /* Top margin for spacing, auto left/right for centering */
+
+    /* Shadows for depth */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Soft, noticeable shadow */
+
+    /* Smooth transitions for interactivity */
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-review:hover {
+    background-color: #4caad8; /* Slightly darker blue on hover */
+    transform: translateY(-3px); /* Lifts the button slightly */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+}
+
+.btn-review:active {
+    background-color: #3b9ac8; /* Even darker blue when pressed */
+    transform: translateY(0); /* Pushes the button down */
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); /* Smaller shadow when pressed */
+}
+
+.comments-container {
+    text-align: center;
+    max-width: 600px;
+    width: 90%;
+}
+
+.comments-title {
+    font-size: 2.5em;
+    color: #333;
+    position: relative;
+}
+
+.comments-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    margin-top: 30px; /* Space between title and box */
+}
+
+.comments-box p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.comments-box p b {
+    color: #333;
+}
+
+/* New styles for the comment input area */
+.comment-input-area {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.comment-input-area h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.comment-input-area form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.comment-input-area input[type="text"],
+.comment-input-area textarea {
+    width: calc(100% - 20px); /* Adjust for padding */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.comment-input-area input[type="text"]:focus,
+.comment-input-area textarea:focus {
+    border-color: #5bc0de; /* Highlight on focus */
+}
+
+.comment-input-area button {
+    background-color: #5bc0de; /* Blue button */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.comment-input-area button:hover {
+    background-color: #4caad8; /* Darker blue on hover */
+}
+
+.font_1 {
+    font-size: 20px; /* Default or small */
+}
+
+.font_2 {
+    font-size: 18px; /* Medium */
+}
+
+.font_3 {
+    font-size: 16px; /* Large */
 }

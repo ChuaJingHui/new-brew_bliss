@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comments</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to your CSS file -->
+</head>
+<body>
+    <nav id="nav">
+      <div class="navTop">
+        <div class="navItem">
+          <img src="images/Contact/logo.png" alt="logo" class="logo">
+        </div>
+
+
+        <div class="navItem">
+            <a class="btn" href="index.html">Home</a>
+            
+            <a class="btn" href="search.html">Search</a>
+            <a class="btn" href="menu.html">Menu</a>
+        </div>
+ 
+        <div></div><div></div><div></div>
+ 
+        <div class="navItem navLinks">
+          <a class="btn" href="login.html">Login</a>
+          <a class="btn1" href="register.html">Register</a>
+        </div>
+    </nav>
+
+    <div class="comments-container">
+        <h2 class="comments-title">Comments</h2>
+        <div class="comments-box">
+            <!-- Existing comments will be loaded here by PHP or JS -->
+            <div id="commentsList">
+                <p><b>Alice:</b> Love the mocha! Perfect balance of chocolate and coffee.</p>
+                <p><b>Bob:</b> The latte is smooth and creamy, my daily go-to.</p>
+                <p><b>Charlie:</b> Friendly staff and cozy atmosphere.</p>
+                <p><b>Eazin:</b> Tried their homemade muffins with a cappuccino. Everything tastes so fresh and real!</p>
+            </div>
+
+            <!-- Comment Input Area (add this part) -->
+            <div class="comment-input-area">
+                <h3>Leave a Comment</h3>
+                <form id="commentForm">
+                    <input type="text" id="commentName" placeholder="Your Name" required>
+                    <textarea id="commentText" placeholder="Your Comment" rows="3" required></textarea>
+                    <button type="submit">Submit Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="comments.js"></script> <!-- Link to your JavaScript file -->
+    <footer>
+  <div class="footerLeft">
+      <div class="footerMenu">
+          <h1 class="fMenuTitle">About Us</h1>
+          <ul class="fList">
+              <li class="fListItem"><strong>Opening hour</strong><br>
+              every day from 8:00 AM to 9:00 PM</li>
+              <li class="fListItem"><strong>Location</strong><br>
+              10 Downing Street, London SW1A 1AA</li>
+              <li class="fListItem"><strong>Contact number</strong><br>
+              +60123456789</li>
+              <li class="fListItem"><strong>Email</strong><br>
+              brewbliss@gmail.com</li>
+          </ul>
+      </div>
+
+
+<div class="footerMenu">
+          <div>
+        <h1 class="fMenuTitle">Text Size</h1>
+              <div>
+                <a class="font_1" onclick="ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
+                <a class="font_2" onclick="ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
+                <a class="font_3" onclick="ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
+              </div>
+
+
+          </div>
+        </div>
+  </div>
+  <div class="footerRight">
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Subscribe to our channel</h1>
+      </div>
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Follow Us</h1>
+          <div class="fIcons">
+              <img src="./images/Contact/facebook.png"  alt="facebook" class="fIcon">
+              <img src="./images/Contact/instagram.png" alt="instagram" class="fIcon">
+              <img src="./images/Contact/whatsapp.png" alt="whatsapp" class="fIcon">
+          </div>
+      </div>
+      <div class="footerRightMenu">
+          <span class="copyright">© 2025 Brew Bliss. All rights reserved.</span>
+      </div>
+  </div>
+</footer>
+</body>
+</html>

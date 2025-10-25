@@ -3,7 +3,7 @@ header('Content-Type: application/json');
 include 'db.php';
 
 $orders = [];
-$order_res = $conn->query("SELECT order_id, product_name, price, quantity FROM order_items ORDER BY order_id DESC LIMIT 50");
+$order_res = $conn->query("SELECT order_id, id, product_name, price, quantity FROM order_items ORDER BY order_id DESC LIMIT 50");
 while($row = $order_res->fetch_assoc()){
   $orders[] = $row;
 }

@@ -11,47 +11,6 @@
         .font_2 { font-size: 20px; }
         .font_3 { font-size: 16px; }
     </style>
-
-   <script>
-        // This function was there
-        function getUserName() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('user') || 'Guest';
-        }
-
-        // THIS IS THE MISSING PART!
-        window.onload = () => {
-            const user = getUserName();
-
-            // Make sure your HTML has <span id="welcome-user"></span> where you want the name
-            const welcomeUserElement = document.getElementById('welcome-user');
-            if (welcomeUserElement) { // Add a check to prevent error if element is still missing
-                welcomeUserElement.textContent = user;
-            } else {
-                console.warn("Element with id 'welcome-user' not found.");
-            }
-
-
-            // Add ?user=username to all nav links EXCEPT logout (index.html)
-            document.querySelectorAll('a.btn').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.endsWith('.html') && !href.includes('index.html')) {
-                    const base = href.split('?')[0];
-                    link.href = `${base}?user=${encodeURIComponent(user)}`;
-                }
-            });
-
-            // THIS IS THE CRITICAL CALL TO loadData()
-            loadData();
-        };
-    </script>     
-
-    <script>
-        function ChangeFont(fontClass) {
-          document.body.className = fontClass;
-        }
-    </script>
-
 </head>
 <body>
 
@@ -61,17 +20,8 @@
           <img src="images/Contact/logo.png" alt="logo" class="logo">
         </div>
 
-
-        <div class="navItem">
-          <a class="btn" href="main.html">Home</a>
-          <a class="btn" href="searchalrlogin.html">Search</a>
-          <a class="btn" href="menualrlogin.html">Menu</a>
-        </div>
- 
-        <div></div><div></div><div></div>
-
         <div class="navItem navLinks">
-          <a class="btn" href="admin.html">Admin</a>
+
           <a class="btn" href="index.html">Logout</a>
         </div>
     </nav>
@@ -81,17 +31,7 @@
 <main class="dashboard_main">
   <header>
     <h1>Admin Dashboard</h1>
-    <p>Welcome, <span id="welcome-user"></span>!</p>
-  </header>
-
-
-  <br>
-
-
-  <br>
-
-
-  <br>
+  </header> <br><br><br>
 
   <section class="order_table">
     <h2>Orders</h2>
@@ -99,9 +39,11 @@
       <thead>
         <tr>
         <th>Order Id</th>
+        <th>Id</th>
         <th>Products</th>
         <th>Quantity</th>
         <th>Price</th>
+        <th>Action</th>
       </tr>
       </thead>
       <tbody id="order_items">
@@ -135,7 +77,6 @@
 </main>
 
   <script>
-    // ... (Your getUserName() and ChangeFont() functions are here) ...
 
     async function loadData() {
         try {
@@ -165,6 +106,7 @@
                     let tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${order.order_id}</td>
+                        <td>${order.id}</td>
                         <td>${order.product_name}</td>
                         <td>${order.quantity}</td>
                         <td>${order.price}</td>
@@ -215,6 +157,8 @@
             alert("An error occurred while loading data: " + e.message);
         }
     }
+
+    
 </script>
 
 
