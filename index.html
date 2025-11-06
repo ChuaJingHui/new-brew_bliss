@@ -17,7 +17,88 @@
         }
     </script>
 
+    <script>
+      let slideIndex = 1; // Start on the first slide
+      let slideshowTimer; // Variable to hold the setTimeout timer
 
+      // --- Functions ---
+
+      // Function to handle next/previous buttons
+      function plusSlides(n) {
+        stopSlideshowTimer(); // Stop autoplay when manually navigating
+        showSlides(slideIndex += n); // Update slideIndex and show
+        startSlideshowTimer(); // Restart autoplay
+      }
+
+      // Function to handle direct dot clicks
+      function currentSlide(n) {
+        stopSlideshowTimer(); // Stop autoplay when manually navigating
+        showSlides(slideIndex = n); // Set slideIndex directly and show
+        startSlideshowTimer(); // Restart autoplay
+      }
+
+      // The core function to display a slide
+      function showSlides(n) {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        let dots = document.getElementsByClassName("dot");
+
+        // If 'n' is provided (manual navigation or initial call), use it
+        // Otherwise, increment for automatic progression
+        if (n !== undefined) {
+          slideIndex = n;
+        } else {
+          slideIndex++; // Increment for next slide in auto-mode
+        }
+
+        // Wrap around logic for slideIndex
+        if (slideIndex > slides.length) { slideIndex = 1; }
+        if (slideIndex < 1) { slideIndex = slides.length; }
+
+        // Hide all slides
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+
+        // Remove 'active' class from all dots
+        for (i = 0; i < dots.length; i++) {
+          dots[i].className = dots[i].className.replace(" active", "");
+        }
+
+        // Display the current slide
+        if (slides.length > 0) { // Ensure there are slides before trying to display
+          slides[slideIndex - 1].style.display = "block";
+        }
+
+        // Add 'active' class to the current dot
+        if (dots.length > 0) { // Ensure there are dots
+          dots[slideIndex - 1].className += " active";
+        }
+      }
+
+      // Function to start the automatic slideshow timer
+      function startSlideshowTimer() {
+          stopSlideshowTimer(); // Clear any existing timer first
+          slideshowTimer = setTimeout(function() {
+              showSlides(); // Call showSlides without an argument for auto-progression
+              startSlideshowTimer(); // Restart the timer for the next slide
+          }, 4000); // Change image every 4 seconds
+      }
+
+      // Function to stop the automatic slideshow timer
+      function stopSlideshowTimer() {
+          clearTimeout(slideshowTimer);
+      }
+
+      // --- Initial calls on page load ---
+      // This ensures the first slide is shown immediately and autoplay begins.
+      document.addEventListener('DOMContentLoaded', (event) => {
+          showSlides(slideIndex); // Show the very first slide (slideIndex=1)
+          startSlideshowTimer(); // Then start the automatic progression
+      });
+
+    </script>
+    
 </head>
 <body>
  
@@ -43,6 +124,30 @@
         </div>
     </nav>
  
+    <div class="slideshow-container">
+
+    <div class="mySlides fade">
+      <a href ="menu.html#drinks">
+      <img src="images/drinksp.jpg" style="width:100%"></a>
+    </div>
+    
+    <div class="mySlides fade">
+            <a href ="menu.html#foods">
+        <img src="images/dessertp.jpg" style="width:100%"></a>
+    </div>
+
+
+    <a class="prev" onclick="plusSlides(-1)">❮</a>
+    <a class="next" onclick="plusSlides(1)">❯</a>
+
+    </div>
+    <br>
+
+    <div style="text-align:center">
+      <span class="dot" onclick="currentSlide(1)"></span> 
+      <span class="dot" onclick="currentSlide(2)"></span> 
+    </div>
+
     <header>
         <h1>Welcome to Brew Bliss</h1>
       </header>
@@ -86,7 +191,7 @@
   </section>
 
 
-  <section id="comment">
+ <section id="comment">
    <div class="headingC">
     <h2>Comments</h2>
 
@@ -101,7 +206,7 @@
      
     </div>
    </div>
-  </section>
+  </section> 
  
   <section id="FAQ">
   <div class="headingF">

@@ -134,6 +134,10 @@
         <label for="address"><strong>Address</strong></label>
         <input type="text" name="address" placeholder="Your address" class="payInput" required><br><br>
     </div>
+    <div class="form-group">
+        <label for="remark"><strong>Remark</strong></label>
+        <input type="text" name="remark" placeholder="Remarks" class="payInput" ><br><br>
+    </div>
 </div>
 
         <h1 class="payTitle">Card Information</h1>
@@ -169,6 +173,8 @@
     { name: "Watermelon Juice", image: "Drinks/watermelon.jpg", price: 6.00, type: "drink", description: "Refreshing watermelon juice" },
     { name: "Honey Lemon", image: "Drinks/honeylemon.jpg", price: 5.00, type: "drink", description: "Sweet and tangy honey lemon" },
     { name: "Lemon Tea", image: "Drinks/lemontea.jpg", price: 5.00, type: "drink", description: "Cool lemon-flavored tea" },
+    { name: "Caramel Milkshake", image: "Drinks/milkshake.jpg", price: 8.00, type: "drink", description: "smooth caramel milkshake" },
+    { name: "Matcha", image: "Drinks/matcha.jpg", price: 9.00, type: "drink", description: "A creamy drink made by matcha powder and milk" },
     { name: "Strawberry Cake", image: "food/strawberryCake.jpg", price: 12.00, type: "food", description: "Sweet strawberry cake" },
     { name: "Red Velvet", image: "food/redVelvet.jpg", price: 13.00, type: "food", description: "Rich red velvet cake" },
     { name: "Brownie", image: "food/brownie.jpg", price: 6.50, type: "food", description: "Chocolate brownie" },
@@ -176,11 +182,12 @@
     { name: "Chocolate Cupcake", image: "food/chocolateCupcake.jpg", price: 6.00, type: "food", description: "Moist chocolate cupcake" },
     { name: "Vanilla Cupcake", image: "food/vanillaCupcake.jpg", price: 6.00, type: "food", description: "Vanilla flavored cupcake" },
     { name: "Tiramisu", image: "food/tiramisu.jpg", price: 14.00, type: "food", description: "Classic tiramisu dessert" },
-    { name: "Berries Cheesecake", image: "food/berriesCheesecake.jpg", price: 13.50, type: "food", description: "Cheesecake with berries" },
+    { name: "Berry Cheesecake", image: "food/berriesCheesecake.jpg", price: 13.50, type: "food", description: "Cheesecake with berries" },
     { name: "Mango Cheesecake", image: "food/mangoCheesecake.jpg", price: 13.50, type: "food", description: "Mango cheesecake slice" },
     { name: "Pancake", image: "food/pancake.jpg", price: 7.50, type: "food", description: "Stack of fluffy pancakes" },
     { name: "Chocolate Mousse", image: "food/chocolateMousse.jpg", price: 9.00, type: "food", description: "Creamy chocolate mousse" }
   ];
+
 
   const drinksGrid = document.getElementById("drinksGrid");
   const foodGrid = document.getElementById("foodGrid");

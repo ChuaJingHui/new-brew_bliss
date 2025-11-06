@@ -67,7 +67,9 @@
         <th>Expiry Month</th>
         <th>Expiry Year</th>
         <th>CVV</th>
-        <th>Purchase Time</th></tr>
+        <th>Remarks</th>
+        <th>Purchase Time</th>
+      </tr>
       </thead>
       <tbody id="purchasehistory">
         <!-- Filled by fetch -->
@@ -142,6 +144,7 @@
                         <td>${p.expiry_month}</td>
                         <td>${p.expiry_year}</td>
                         <td>${p.cvv}</td>
+                        <td>${p.remark}</td>
                         <td>${p.purchase_time}</td>
                     `;
                     purchaseTbody.appendChild(tr);

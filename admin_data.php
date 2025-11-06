@@ -9,7 +9,7 @@ $orders = $stmt_orders->fetchAll();
 
 $purchases = [];
 // Use PDO for fetching purchases
-$stmt_purchases = $pdo->query("SELECT id, username, phone, address, card_number, expiry_month, expiry_year, cvv, purchase_time FROM purchasehistory ORDER BY id DESC LIMIT 50");
+$stmt_purchases = $pdo->query("SELECT id, username, phone, address, card_number, expiry_month, expiry_year, cvv, remark, purchase_time FROM purchasehistory ORDER BY id DESC LIMIT 50");
 $purchases = $stmt_purchases->fetchAll();
 
 echo json_encode(['orders' => $orders, 'purchases' => $purchases]);

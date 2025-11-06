@@ -23,7 +23,6 @@ header{
   margin-top: 0;
   padding-top: 1rem;
   text-align: center;
-  background-color: #cce5e9;
   padding-bottom: 1rem;
 }
 
@@ -69,6 +68,64 @@ nav {
   height: auto;
   margin-left: 50px;
 }
+
+/*poster*/
+* {box-sizing: border-box;}
+.mySlides {display: none;}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 90%;
+  position: relative;
+  margin: auto;
+}
+
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #717171;
+}
+
+/* Fading animation */
+.fade {
+  animation-name: fade;
+  animation-duration: 1.5s;
+}
+
+
+
 
 /* Intro Section */
 .intro {
@@ -333,7 +390,9 @@ input[type="number"] {
   border: 1px solid #ccc; /* Add border for definition */
   border-radius: 4px; /* Slightly rounded corners */
   -moz-appearance: textfield; /* Hide Firefox number input arrows */
+  appearance: textfield; /* Standard property for other browsers */
 }
+
 /* Hide arrow buttons for Chrome, Safari, Edge */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -412,7 +471,7 @@ input[type="number"]::-webkit-inner-spin-button {
 /*cart(payment)*/
 .payment{
   width: 600px;
-  height: 650px;
+  height: 750px;
   background-color: white;
   position: absolute;
   top: 0;

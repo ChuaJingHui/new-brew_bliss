@@ -1,4 +1,4 @@
-1<?php
+<?php
 include 'db.php';
 header('Content-Type: text/html; charset=utf-8');
 
@@ -15,11 +15,12 @@ $card_number = $conn->real_escape_string($_POST['card_number']);
 $expiry_month= $conn->real_escape_string($_POST['expiry_month']);
 $expiry_year = $conn->real_escape_string($_POST['expiry_year']);
 $cvv         = $conn->real_escape_string($_POST['cvv']);
+$remark      = $conn->real_escape_string($_POST['remark']);
 
 // Step 1: Insert order into purchasehistory
 $sql_order = "
-    INSERT INTO purchasehistory (username, phone, address, card_number, expiry_month, expiry_year, cvv)
-    VALUES ('$username', '$phone', '$address', '$card_number', '$expiry_month', '$expiry_year', '$cvv')
+    INSERT INTO purchasehistory (username, phone, address, card_number, expiry_month, expiry_year, cvv, remark)
+    VALUES ('$username', '$phone', '$address', '$card_number', '$expiry_month', '$expiry_year', '$cvv','$remark')
 ";
 
 
