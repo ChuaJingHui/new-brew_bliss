@@ -11,6 +11,20 @@
     .font_1 { font-size: 24px; }
     .font_2 { font-size: 20px; }
     .font_3 { font-size: 16px; }
+
+    /* Basic styling for validation messages - you can enhance this with your style.css */
+    input:invalid:not(:placeholder-shown) {
+        border: 2px solid red;
+    }
+    input:invalid:not(:placeholder-shown) + .validation-message { /* Using class for message */
+        display: block;
+        color: red;
+        font-size: 0.8em;
+        margin-top: 5px;
+    }
+    .validation-message { /* Added a class for the message span */
+        display: none;
+    }
   </style>
   <script>
     function ChangeFont(fontClass) {
@@ -88,7 +102,7 @@
       <br>
       
       <h1 class="payTitle">Personal Information</h1>
-      <form action="buy.php" method="POST" onsubmit="prepareCartData()">
+      <form action="buy.php" method="POST" id="paymentForm"> <!-- Added ID to the form -->
         <input type="hidden" name="cart" id="cartInput">
 
 
@@ -118,11 +132,20 @@
         </div>
 
 
-        <input type="text" name="card_number" class="payInput" placeholder="Card Number" required>
+        <input type="text" name="card_number" class="payInput" placeholder="Card Number" required
+               pattern="^(\d{4}\s*){3}\d{1,4}$|^\d{13,16}$"
+               title="Card number must be 13-16 digits with or without spaces"
+               id="cardNumberInput" maxlength="19">
         <div class="cardInfo">
-          <input type="text" name="expiry_month" placeholder="mm" class="payInput sm" required>
-          <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm" required>
-          <input type="text" name="cvv" placeholder="cvv" class="payInput sm" required>
+          <input type="text" name="expiry_month" placeholder="mm" class="payInput sm" required
+                 pattern="^(0?[1-9]|1[0-2])$" title="Month must be between 01 and 12 (e.g., 03 or 12)"
+                 id="expiryMonthInput" maxlength="2">
+          <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm" required
+                 pattern="^\d{4}$" title="Year must be a 4-digit number"
+                 id="expiryYearInput" maxlength="4">
+          <input type="text" name="cvv" placeholder="cvv" class="payInput sm" required
+                 pattern="^\d{3,4}$" title="CVV must be 3 or 4 digits"
+                 id="cvvInput" maxlength="4">
         </div>
 
 <br><br>
@@ -298,8 +321,13 @@
     document.getElementById("cart").style.display = "block";
   }
 
-  function prepareCartData() {
+  // Function to prepare cart data and clean card number for submission
+  function prepareFormForSubmission() {
     document.getElementById('cartInput').value = JSON.stringify(cart);
+
+    // Clean card number by removing spaces before submission
+    const cardNumberInput = document.getElementById('cardNumberInput');
+    cardNumberInput.value = cardNumberInput.value.replace(/\s/g, ''); // Remove all spaces
   }
 
   function buyNow() {
@@ -307,10 +335,92 @@
       alert("Your cart is empty!");
       return;
     } else {
-      prepareCartData();
+      // Open the payment modal
       document.getElementById('paymentModal').style.display = "flex";
+      // The actual preparation and cleaning will happen on form submit
     }
   }
+
+  // --- Payment Modal Validation and Formatting Logic ---
+  const cardNumberInput = document.getElementById('cardNumberInput');
+  const expiryMonthInput = document.getElementById('expiryMonthInput');
+  const expiryYearInput = document.getElementById('expiryYearInput');
+  const cvvInput = document.getElementById('cvvInput');
+
+  const currentYear = new Date().getFullYear();
+
+  // Add event listener to the form to call prepareFormForSubmission before actual submit
+  const paymentForm = document.getElementById('paymentForm');
+  if (paymentForm) {
+      paymentForm.addEventListener('submit', function(event) {
+          // This will clean the card number input's value before it's sent
+          // and also prepare the cart data.
+          prepareFormForSubmission();
+          // The browser will then proceed with its native validation (patterns, required, etc.)
+          // and if valid, send the form.
+      });
+  }
+
+
+  // 1. Card Number Formatting (add spaces every 4 digits)
+  cardNumberInput.addEventListener('input', function(event) {
+    let value = this.value.replace(/\D/g, ''); // Remove non-digits
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Add space after every 4 digits
+    this.value = value;
+  });
+
+  // 2. Expiry Month Formatting (ensure 2 digits and validation)
+  expiryMonthInput.addEventListener('input', function() {
+    let month = this.value.replace(/\D/g, ''); // Remove non-digits
+    if (month.length > 2) { // Limit to 2 digits
+        month = month.substring(0, 2);
+    }
+    this.value = month;
+
+    let monthInt = parseInt(month);
+    if (isNaN(monthInt) || monthInt < 1 || monthInt > 12) {
+      this.setCustomValidity('Month must be between 1 and 12');
+    } else {
+      this.setCustomValidity('');
+    }
+  });
+
+  // 3. Expiry Year Formatting and Validation
+  expiryYearInput.addEventListener('input', function() {
+    let year = this.value.replace(/\D/g, ''); // Remove non-digits
+    if (year.length > 4) { // Limit to 4 digits
+        year = year.substring(0, 4);
+    }
+    this.value = year;
+
+    let yearInt = parseInt(year);
+    if (isNaN(yearInt) || yearInt < currentYear) {
+      this.setCustomValidity(`Year must be ${currentYear} or later`);
+    } else {
+      this.setCustomValidity('');
+    }
+  });
+
+  // 4. CVV Formatting (ensure 3-4 digits)
+  cvvInput.addEventListener('input', function() {
+    let cvv = this.value.replace(/\D/g, ''); // Remove non-digits
+    if (cvv.length > 4) { // Limit to 4 digits
+        cvv = cvv.substring(0, 4);
+    }
+    this.value = cvv;
+     // Pattern attribute will handle exact 3-4 digit validation on submit
+  });
+
+  // Prevent non-numeric input for all relevant fields (allow space for card number)
+  const numericInputs = document.querySelectorAll('#cardNumberInput, #expiryMonthInput, #expiryYearInput, #cvvInput');
+  numericInputs.forEach(input => {
+    input.addEventListener('keypress', function(event) {
+      // Allow digits and space for card number, only digits for others
+      if (!/\d/.test(event.key) && !(input.id === 'cardNumberInput' && event.key === ' ')) {
+        event.preventDefault();
+      }
+    });
+  });
 
   // On load, render saved cart
   renderCart();
