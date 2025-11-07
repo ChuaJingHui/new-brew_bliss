@@ -1224,7 +1224,7 @@ tbody tr:hover {
 }
 
 /* General button styling for delete */
-.btn-delete {
+.delete-btn {
     background-color: #dc3545; /* Bootstrap's danger red */
     color: white;
     border: none;
@@ -1239,21 +1239,21 @@ tbody tr:hover {
 }
 
 /* Hover effect */
-.btn-delete:hover {
+.delete-btn:hover {
     background-color: #c82333; /* Darker red on hover */
     transform: translateY(-1px); /* Slight lift */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow */
 }
 
 /* Active (click) effect */
-.btn-delete:active {
+.delete-btn:active {
     background-color: #bd2130; /* Even darker red when clicked */
     transform: translateY(0); /* Press down effect */
     box-shadow: none;
 }
 
 /* Focus styling for accessibility */
-.btn-delete:focus {
+.delete-btn:focus {
     outline: 2px solid #007bff; /* Blue outline for focus */
     outline-offset: 2px;
 }
