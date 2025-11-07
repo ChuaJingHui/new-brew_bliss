@@ -19,7 +19,7 @@ if (isset($data['order_id'])) {
     try {
         // 3. Prepare an SQL DELETE statement
         // Use the $pdo object from db.php
-        $stmt = $pdo->prepare("DELETE FROM order_items WHERE order_id = :order_id");
+        $stmt = $pdo->prepare("DELETE FROM orders WHERE order_id = :order_id");
        
         // 4. Bind the parameter
         $stmt->bindParam(':order_id', $orderId, PDO::PARAM_INT); // Assuming order_id is an integer

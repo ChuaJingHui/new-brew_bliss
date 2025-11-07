@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View My Orders - Brew Bliss</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .auth_container {
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 40px;
+    }
+    .auth_container h1 {
+      color: #333;
+      margin-bottom: 30px;
+    }
+    .auth_container label {
+      display: block;
+      text-align: left;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: bold;
+    }
+    .auth_container input[type="text"],
+    .auth_container input[type="tel"] {
+      width: calc(100% - 20px);
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .auth_container button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s ease;
+    }
+    .auth_container button:hover {
+      background-color: #45a049;
+    }
+    .error_message {
+      color: red;
+      margin-top: 15px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <nav id="nav">
+      <div class="navTop">
+        <div class="navItem">
+          <img src="images/Contact/logo.png" alt="Brew Bliss Logo" class="logo">
+        </div>
+        <div class="navItem navLinks">
+          <a class="btn" href="index.html">Home</a>
+          <!-- No logout needed here as they aren't logged in conventionally -->
+        </div>
+      </div>
+  </nav>
+
+  <main>
+    <div class="auth_container">
+      <h1>View My Orders</h1>
+      <p>Please enter your username and phone number to view your order history.</p>
+      <form id="orderAuthForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" placeholder="e.g., +1234567890" required>
+
+        <button type="submit">View Orders</button>
+        <p id="errorMessage" class="error_message"></p>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footerLeft">
+      <div class="footerMenu">
+          <h1 class="fMenuTitle">About Us</h1>
+          <ul class="fList">
+              <li class="fListItem"><strong>Opening hour</strong><br>
+              every day from 8:00 AM to 9:00 PM</li>
+              <li class="fListItem"><strong>Location</strong><br>
+              10 Downing Street, London SW1A 1AA</li>
+              <li class="fListItem"><strong>Contact number</strong><br>
+              +60123456789</li>
+              <li class="fListItem"><strong>Email</strong><br>
+              brewbliss@gmail.com</li>
+          </ul>
+      </div>
+      <div class="footerMenu">
+        <h1 class="fMenuTitle">Text Size</h1>
+        <div>
+          <a class="font_1" onclick="javascript:ChangeFont('font_1');" href="javascript:void(0);">Aa</a>
+          <a class="font_2" onclick="javascript:ChangeFont('font_2');" href="javascript:void(0);">Aa</a>
+          <a class="font_3" onclick="javascript:ChangeFont('font_3');" href="javascript:void(0);">Aa</a>
+        </div>
+      </div>
+    </div>
+    <div class="footerRight">
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Subscribe to our channel</h1>
+      </div>
+      <div class="footerRightMenu">
+          <h1 class="fMenuTitle">Follow Us</h1>
+          <div class="fIcons">
+              <img src="./images/Contact/facebook.png"  alt="facebook" class="fIcon">
+              <img src="./images/Contact/instagram.png" alt="instagram" class="fIcon">
+              <img src="./images/Contact/whatsapp.png" alt="whatsapp" class="fIcon">
+          </div>
+      </div>
+      <div class="footerRightMenu">
+          <span class="copyright">© 2025 Brew Bliss. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Function to change the body's font size based on the selected class
+    function ChangeFont(fontClass) {
+        document.body.classList.remove('font_1', 'font_2', 'font_3');
+        document.body.classList.add(fontClass);
+    }
+
+    document.getElementById('orderAuthForm').addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      const username = document.getElementById('username').value;
+      const phone = document.getElementById('phone').value;
+      const errorMessage = document.getElementById('errorMessage');
+
+      errorMessage.style.display = 'none'; // Hide previous error messages
+
+      try {
+        const response = await fetch('customer_orders.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: username, phone: phone })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          // If successful, store orders in sessionStorage and redirect to the display page
+          sessionStorage.setItem('customerOrders', JSON.stringify(data.orders));
+          window.location.href = 'my_orders.html'; // Redirect to a page that displays orders
+        } else {
+          errorMessage.textContent = data.message || 'Invalid username or phone number.';
+          errorMessage.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        errorMessage.textContent = 'An error occurred. Please try again.';
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

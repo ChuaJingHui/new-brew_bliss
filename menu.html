@@ -11,22 +11,6 @@
     .font_1 { font-size: 24px; }
     .font_2 { font-size: 20px; }
     .font_3 { font-size: 16px; }
-
-    /* Basic styling for validation messages - you can enhance this with your style.css */
-    input:invalid:not(:placeholder-shown) {
-        border: 2px solid red;
-    }
-    /* Updated selector for validation messages - ensure this matches your actual setup */
-    input:invalid:not(:placeholder-shown) + .validation-message,
-    input:invalid:not(:placeholder-shown) ~ .validation-message { /* Added ~ for siblings */
-        display: block;
-        color: red;
-        font-size: 0.8em;
-        margin-top: 5px;
-    }
-    .validation-message { /* Added a class for the message span */
-        display: none;
-    }
   </style>
   <script>
     function ChangeFont(fontClass) {
@@ -104,58 +88,48 @@
       <br>
       
       <h1 class="payTitle">Personal Information</h1>
-      <form action="index.php" method="POST" id="paymentForm"> <!-- Changed action to index.php for combined file -->
+      <form action="buy.php" method="POST" onsubmit="prepareCartData()">
         <input type="hidden" name="cart" id="cartInput">
 
 
-        <div class="personal-info-section">
-    <div class="form-group">
-        <label for="name"><strong>Name and Surname</strong></label>
-        <input type="text" name="username" placeholder="Enter your name" class="payInput" required>
+        <form action="order.html" method="GET">
+    <div class="personal-info-section">
+        <div class="form-group">
+            <label for="name"><strong>Name and Surname</strong></label>
+            <input type="text" name="username" placeholder="Enter your name" class="payInput" required>
+        </div>
+        <div class="form-group">
+            <label for="phone"><strong>Phone Number</strong></label>
+            <input type="text" name="phone" placeholder="+60 12-345 6789" class="payInput" required>
+        </div>
+        <div class="form-group">
+            <label for="address"><strong>Address</strong></label>
+            <input type="text" name="address" placeholder="Your address" class="payInput" required><br><br>
+        </div>
+        <div class="form-group">
+            <label for="remark"><strong>Remark</strong></label>
+            <input type="text" name="remark" placeholder="Remarks" class="payInput"><br><br>
+        </div>
     </div>
-    <div class="form-group">
-        <label for="phone"><strong>Phone Number</strong></label>
-        <input type="text" name="phone" placeholder="+60 12-345 6789" class="payInput" required>
+
+    <h1 class="payTitle">Card Information</h1>
+    <div class="cardIcons">
+        <img src="./images/Contact/visa.png" width="40" class="cardIcon">
+        <img src="./images/Contact/master.png" width="40" class="cardIcon">
     </div>
-    <div class="form-group">
-        <label for="address"><strong>Address</strong></label>
-        <input type="text" name="address" placeholder="Your address" class="payInput" required><br><br>
+
+    <input type="text" name="card_number" class="payInput" placeholder="Card Number" required>
+    <div class="cardInfo">
+        <input type="text" name="expiry_month" placeholder="mm" class="payInput sm" required>
+        <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm" required>
+        <input type="text" name="cvv" placeholder="cvv" class="payInput sm" required>
     </div>
-    <div class="form-group">
-        <label for="remark"><strong>Remark</strong></label>
-        <input type="text" name="remark" placeholder="Remarks" class="payInput" ><br><br>
-    </div>
+
+    <br><br>
+    <button type="submit" class="payButton">Checkout!</button>
+</form>
 </div>
-
-        <h1 class="payTitle">Card Information</h1>
-        <div class="cardIcons">
-          <img src="./images/Contact/visa.png" width="40" class="cardIcon">
-          <img src="./images/Contact/master.png" width="40" class="cardIcon">
-        </div>
-
-
-        <input type="text" name="card_number" class="payInput" placeholder="Card Number" required
-               pattern="^(\d{4}\s*){3}\d{1,4}$|^\d{13,16}$"
-               title="Card number must be 13-16 digits with or without spaces"
-               id="cardNumberInput" maxlength="19">
-        <div class="cardInfo">
-          <input type="text" name="expiry_month" placeholder="mm" class="payInput sm" required
-                 pattern="^(0?[1-9]|1[0-2])$" title="Month must be between 01 and 12 (e.g., 03 or 12)"
-                 id="expiryMonthInput" maxlength="2">
-          <input type="text" name="expiry_year" placeholder="yyyy" class="payInput sm" required
-                 pattern="^\d{4}$" title="Year must be a 4-digit number"
-                 id="expiryYearInput" maxlength="4">
-          <input type="text" name="cvv" placeholder="cvv" class="payInput sm" required
-                 pattern="^\d{3,4}$" title="CVV must be 3 or 4 digits"
-                 id="cvvInput" maxlength="4">
-        </div>
-
-<br><br>
-        <button type="submit" class="payButton">Checkout!</button>
-      </form>
-    </div>
-  </div>
-
+</div>
 
 <script>
   const products = [
@@ -323,25 +297,8 @@
     document.getElementById("cart").style.display = "block";
   }
 
-  // Function to prepare cart data and clean card number for submission
-  function prepareFormForSubmission() {
+  function prepareCartData() {
     document.getElementById('cartInput').value = JSON.stringify(cart);
-
-    // Clean card number by removing spaces before submission
-    const cardNumberInput = document.getElementById('cardNumberInput');
-    // Store original formatted value temporarily if you want to restore it later
-    const originalCardNumberValue = cardNumberInput.value;
-    cardNumberInput.value = cardNumberInput.value.replace(/\s/g, ''); // Remove all spaces
-
-    // Make sure phone number is also cleaned if you are only storing digits in DB
-    const phoneInput = document.querySelector('input[name="phone"]');
-    // Store original formatted value temporarily
-    const originalPhoneValue = phoneInput.value;
-    phoneInput.value = phoneInput.value.replace(/[^0-9]/g, ''); // Remove non-digits from phone
-
-    // You might want to store these original values in a hidden field or global var
-    // if the form could fail validation on the server and you want the user to see their formatted input again.
-    // For this example, we're just cleaning for immediate submission.
   }
 
   function buyNow() {
@@ -349,114 +306,10 @@
       alert("Your cart is empty!");
       return;
     } else {
-      // Open the payment modal
+      prepareCartData();
       document.getElementById('paymentModal').style.display = "flex";
-      // The actual preparation and cleaning will happen on form submit
     }
   }
-
-  // --- Payment Modal Validation and Formatting Logic ---
-  const cardNumberInput = document.getElementById('cardNumberInput');
-  const expiryMonthInput = document.getElementById('expiryMonthInput');
-  const expiryYearInput = document.getElementById('expiryYearInput');
-  const cvvInput = document.getElementById('cvvInput');
-  const phoneInput = document.querySelector('input[name="phone"]'); // Get phone input
-
-
-  const currentYear = new Date().getFullYear();
-  const maxExpiryYear = currentYear + 10; // Calculate the maximum allowed year for expiry
-
-  // Add event listener to the form to call prepareFormForSubmission before actual submit
-  const paymentForm = document.getElementById('paymentForm');
-  if (paymentForm) {
-      paymentForm.addEventListener('submit', function(event) {
-          // IMPORTANT: Call prepareFormForSubmission() HERE.
-          // This will clean the card number and phone number inputs' values just before the form is sent.
-          prepareFormForSubmission();
-          // The browser will then proceed with its native validation (patterns, required, etc.)
-          // and if valid, send the form.
-      });
-  }
-
-
-  // 1. Card Number Formatting (add spaces every 4 digits)
-  cardNumberInput.addEventListener('input', function(event) {
-    let value = this.value.replace(/\D/g, ''); // Remove non-digits
-    value = value.replace(/(\d{4})(?=\d)/g, '$1 '); // Add space after every 4 digits
-    this.value = value;
-  });
-
-  // 2. Expiry Month Formatting (ensure 2 digits and validation)
-  expiryMonthInput.addEventListener('input', function() {
-    let month = this.value.replace(/\D/g, ''); // Remove non-digits
-    if (month.length > 2) { // Limit to 2 digits
-        month = month.substring(0, 2);
-    }
-    this.value = month;
-
-    let monthInt = parseInt(month);
-    if (isNaN(monthInt) || monthInt < 1 || monthInt > 12) {
-      this.setCustomValidity('Month must be between 1 and 12');
-    } else {
-      this.setCustomValidity('');
-    }
-  });
-
-  // 3. Expiry Year Formatting and Validation
-  expiryYearInput.addEventListener('input', function() {
-    let year = this.value.replace(/\D/g, ''); // Remove non-digits
-    if (year.length > 4) { // Limit to 4 digits
-        year = year.substring(0, 4);
-    }
-    this.value = year;
-
-    let yearInt = parseInt(year);
-    // Modified validation: must be >= currentYear AND <= currentYear + 10
-    if (isNaN(yearInt) || yearInt < currentYear || yearInt > maxExpiryYear) {
-      this.setCustomValidity(`Year must be between ${currentYear} and ${maxExpiryYear}`);
-    } else {
-      this.setCustomValidity('');
-    }
-  });
-
-  // 4. CVV Formatting (ensure 3-4 digits)
-  cvvInput.addEventListener('input', function() {
-    let cvv = this.value.replace(/\D/g, ''); // Remove non-digits
-    if (cvv.length > 4) { // Limit to 4 digits
-        cvv = cvv.substring(0, 4);
-    }
-    this.value = cvv;
-     // Pattern attribute will handle exact 3-4 digit validation on submit
-  });
-
-  // 5. Phone number formatting (allow +, numbers, spaces, hyphens for display, but clean for submission)
-  phoneInput.addEventListener('input', function() {
-      // Basic formatting for display - keeps digits, +, -, spaces
-      // You can make this more sophisticated if needed for specific phone number formats
-      this.value = this.value.replace(/[^0-9+\s-]/g, '');
-  });
-
-
-  // Prevent non-numeric input for all relevant fields (allow space for card number, + - for phone)
-  const allNumericLikeInputs = document.querySelectorAll('#cardNumberInput, #expiryMonthInput, #expiryYearInput, #cvvInput, input[name="phone"]');
-  allNumericLikeInputs.forEach(input => {
-    input.addEventListener('keypress', function(event) {
-      // Allow digits by default
-      if (/\d/.test(event.key)) {
-        return;
-      }
-      // Allow space for card number input only
-      if (input.id === 'cardNumberInput' && event.key === ' ') {
-        return;
-      }
-      // Allow '+' and '-' for phone number input only
-      if (input.name === 'phone' && (event.key === '+' || event.key === '-')) {
-          return;
-      }
-      // Prevent all other non-digit keys
-      event.preventDefault();
-    });
-  });
 
   // On load, render saved cart
   renderCart();
