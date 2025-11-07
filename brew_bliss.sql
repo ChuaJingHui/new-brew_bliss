@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2025 at 12:00 PM
+-- Generation Time: Nov 07, 2025 at 12:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -71,8 +71,7 @@ INSERT INTO `order_items` (`order_id`, `id`, `product_name`, `price`, `quantity`
 (3, 2, 'Chocolate Cupcake', 6.00, 1),
 (4, 2, 'Brownie', 6.50, 1),
 (5, 2, 'Honey Lemon (Ice)', 5.00, 1),
-(6, 3, 'Matcha (Hot)', 9.00, 1),
-(7, 4, 'Caramel Milkshake (Ice)', 8.00, 1);
+(6, 3, 'Matcha (Hot)', 9.00, 1);
 
 -- --------------------------------------------------------
 
@@ -83,9 +82,9 @@ INSERT INTO `order_items` (`order_id`, `id`, `product_name`, `price`, `quantity`
 CREATE TABLE `purchasehistory` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
-  `phone` int(13) NOT NULL,
+  `phone` varchar(20) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `card_number` int(20) NOT NULL,
+  `card_number` varchar(20) NOT NULL,
   `expiry_month` int(2) NOT NULL,
   `expiry_year` int(4) NOT NULL,
   `cvv` int(3) NOT NULL,
@@ -98,11 +97,11 @@ CREATE TABLE `purchasehistory` (
 --
 
 INSERT INTO `purchasehistory` (`id`, `username`, `phone`, `address`, `card_number`, `expiry_month`, `expiry_year`, `cvv`, `remark`, `purchase_time`) VALUES
-(1, 'yes', 124756679, 'Jalan Damai 25', 1234567890, 12, 2026, 321, NULL, '2025-10-25 07:08:44'),
-(2, 'yes', 124756679, '1, Jalan Damai 1, 14000 BM', 1234567890, 12, 2026, 674, 'more ice for honey lemon', '2025-11-06 09:59:49'),
-(3, 'yeji', 2147483647, '1, Jalan Aman 1, Taman Aman, 14000 BM', 2147483647, 12, 2026, 436, NULL, '2025-11-06 15:48:53'),
-(4, 'John', 2147483647, '31, Jalan Aman 4, Taman Aman, 14000 BM', 1975656283, 7, 2028, 692, '', '2025-11-06 16:13:13'),
-(5, 'Lim  Wendy', 2147483647, '5, Jalan Alma 4, Taman Alma, 14000 BM', 2147483647, 7, 2027, 9876, '', '2025-11-07 10:40:28');
+(1, 'yes', '124756679', 'Jalan Damai 25', '1234567890', 12, 2026, 321, NULL, '2025-10-25 07:08:44'),
+(2, 'yes', '124756679', '1, Jalan Damai 1, 14000 BM', '1234567890', 12, 2026, 674, 'more ice for honey lemon', '2025-11-06 09:59:49'),
+(3, 'yeji', '2147483647', '1, Jalan Aman 1, Taman Aman, 14000 BM', '2147483647', 12, 2026, 436, NULL, '2025-11-06 15:48:53'),
+(4, 'John', '2147483647', '31, Jalan Aman 4, Taman Aman, 14000 BM', '1975656283', 7, 2028, 692, '', '2025-11-06 16:13:13'),
+(5, 'Lim  Wendy', '2147483647', '5, Jalan Alma 4, Taman Alma, 14000 BM', '2147483647', 7, 2027, 9876, '', '2025-11-07 10:40:28');
 
 -- --------------------------------------------------------
 
